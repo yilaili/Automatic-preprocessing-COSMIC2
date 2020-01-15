@@ -58,6 +58,13 @@ def submit(**args):
     cluster = args['cluster']
     codedir = os.path.abspath(os.path.join(os.path.realpath(sys.argv[0]), os.pardir))
     wkdir = os.path.abspath(os.path.dirname(args['input']))
+
+    os.chdir(codedir)
+    with open(cluster_config_file, 'r') as f:
+        cluster_config = json.load(f)
+    with open(job_config_file, 'r') as f:
+        job_config = json.load(f)
+            
     submit_name = 'submit_%s.sh' %args['program']
     cluster_config_file='cluster_config.json'
     job_config_file = 'micassess_config.json'
@@ -73,12 +80,6 @@ def submit(**args):
     conda_env = 'conda activate cryoassess'
     command = 'python micassess.py '
     parameters = editparameters(job_config[program]['parameters'], args['model'], args['threshold'])
-
-    os.chdir(codedir)
-    with open(cluster_config_file, 'r') as f:
-        cluster_config = json.load(f)
-    with open(job_config_file, 'r') as f:
-        job_config = json.load(f)
 
     write_submit_comet(codedir, wkdir, submit_name, \
                         jobname, user_email, walltime, \
