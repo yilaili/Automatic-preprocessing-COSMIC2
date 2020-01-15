@@ -80,7 +80,7 @@ def submit(**args):
     stderr = '2> run_%s.err ' %args['program']
     module = ' '
     conda_env = 'conda activate cryoassess'
-    command = 'python micassess.py '
+    command = 'python /home/yilaili/codes/Automatic-preprocessing-COSMIC2/micassess.py '
     parameters = editparameters(job_config[program]['parameters'], args['model'], args['threshold'])
 
     write_submit_comet(codedir, wkdir, submit_name, \
@@ -112,6 +112,8 @@ def check_complete(job_id, query_cmd, keyarg):
         i = i + 1
 
 def check_output_good(**args):
+    sys.stdout = open(os.devnull, "w")
+    sys.stderr = open(os.devnull, "w")    
     wkdir = os.path.abspath(os.path.dirname(args['input']))
     os.chdir(wkdir)
     ## Below: check if the output is correct.
@@ -124,11 +126,8 @@ def check_output_good(**args):
         else:
             f.write('Submission job is done but the output may not be right. Please check.\n')
 
-#%%############################################################################
 if __name__ == '__main__':
     ## Disable all console outputs
-    sys.stdout = open(os.devnull, "w")
-    sys.stderr = open(os.devnull, "w")
     args = setupParserOptions()
     job_id, query_cmd, keyarg = submit(**args)
     check_complete(job_id, query_cmd, keyarg)
