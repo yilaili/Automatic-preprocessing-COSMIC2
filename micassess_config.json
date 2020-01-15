@@ -9,7 +9,7 @@
     "module": " ",
     "extra": " ",
     "conda_env": "conda activate cryoassess",
-    "command": "python micassess.py ",
+    "command": "python /home/yilaili/codes/Automatic-preprocessing-COSMIC2/micassess.py ",
     "parameters": "-m $$model -t $$threshold ",
     "tail": " "
   }
