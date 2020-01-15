@@ -68,7 +68,7 @@ def write_submit_comet(codedir, wkdir, submit_name, \
                         parameters, \
                         extra='', \
                         tail='', \
-                        template_file='comet_submit_template.sh'
+                        template_file='comet_submit_template.sh', \
                         cluster_config_file='cluster_config.json', \
                         cluster='comet', \
                         allocation_name='csd547', \
@@ -117,7 +117,7 @@ def write_submit_comet(codedir, wkdir, submit_name, \
         os.remove(submit_name)
     except OSError:
         pass
-    ## Below: write the submission file    
+    ## Below: write the submission file
     with open(os.path.join(codedir, template_file), 'r') as f:
         with open(submit_name, 'w') as new_f:
             for line in f:
