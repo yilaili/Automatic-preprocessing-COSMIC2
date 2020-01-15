@@ -115,7 +115,7 @@ def check_output_good(**args):
     ## Below: check if the output is correct.
     with open('%s_log.txt' %args['program'], 'a+') as f:
         f.write('Checking outputs....\n')
-    isgood = check_good(wkdir)
+    isgood = check_good(args['input'], args['output'])
     with open('%s_log.txt' %args['program'], 'a+') as f:
         if isgood:
             f.write('Micrograph assessment has finished.\n')
