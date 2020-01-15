@@ -43,7 +43,7 @@ def setupParserOptions():
     return args
 
 def editparameters(s, model, threshold):
-    new_s = s.replace('$$model', model).replace('$$threshold', threshold)
+    new_s = s.replace('$$model', model).replace('$$threshold', str(threshold))
     return new_s
 
 def check_good(input, output):
