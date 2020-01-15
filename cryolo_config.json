@@ -1,0 +1,10 @@
+    {
+    "model" : {
+        "architecture":         "PhosaurusNet",
+        "input_size":           1024,
+        "anchors":              [130,130],
+        "max_box_per_image":    700,
+        "num_patches":          1,
+        "filter":               [0.1,"tmp_filtered"]
+      }
+    }

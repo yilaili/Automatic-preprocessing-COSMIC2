@@ -1,0 +1,15 @@
+{
+  "general": {
+    "input": "--i micrographs.star ",
+    "output": "--o micrographs/ ",
+    "runout": "> run_ctf.out ",
+    "runerr": "2> run_ctf.err "
+  },
+  "ctffind": {
+    "module": "module load relion/3.0-cluster/openmpi/3.1.2",
+    "extra": "",
+    "command": "mpirun  -np $NSLOTS `which relion_run_ctffind_mpi` ",
+    "parameters": "--CS $$CS --HT $$HT --AmpCnst 0.1 --XMAG $$XMAG --DStep $$DStep --Box 512 --ResMin 30 --ResMax 5 --dFMin 5000 --dFMax 50000 --FStep 500 --dAst 100 --ctffind_exe /programs/x/ctffind4/4.1.8/bin/ctffind --ctfWin -1 --is_ctffind4   ",
+    "tail": "< /dev/null"
+  }
+}

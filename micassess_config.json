@@ -1,0 +1,16 @@
+{
+  "general": {
+    "input": "-i ",
+    "output": " ",
+    "stdout": "> run_micassess.out ",
+    "stderr": "2> run_micassess.err "
+  },
+  "mic_assess": {
+    "module": " ",
+    "extra": " ",
+    "conda_env": "conda activate cryoassess",
+    "command": "python micassess.py ",
+    "parameters": "-m $$model -t $$threshold ",
+    "tail": " "
+  }
+}

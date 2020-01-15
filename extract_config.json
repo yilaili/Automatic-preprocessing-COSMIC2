@@ -1,0 +1,18 @@
+{
+  "general": {
+    "input": "--i micrographs_ctf.star ",
+    "coord_suffix": "--coord_suffix .star ",
+    "coord_dir": "--coord_dir micrographs/ ",
+    "part_dir": "--part_dir particles/ ",
+    "part_star": "--part_star particles.star ",
+    "runout": "   > run_extract.out ",
+    "runerr": "2> run_extract.err "
+  },
+  "relion_extract": {
+    "module": "module load relion/3.0-cluster/openmpi/3.1.2",
+    "extra": "",
+    "command": "mpirun  -np $NSLOTS `which relion_preprocess_mpi` ",
+    "parameters": " --extract  --extract_size $$extract_size --norm  --bg_radius $$bg_radius --white_dust 5 --black_dust 5 --invert_contrast --scale $$scale  ",
+    "tail": "< /dev/null"
+  }
+}

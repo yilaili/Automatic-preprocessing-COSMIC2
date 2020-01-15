@@ -1,0 +1,15 @@
+{
+  "comet": {
+    "job_name": "default_jobname",
+    "user_email": " ",
+    "walltime": "24:00:00",
+    "allocation_name": "csd547",
+    "partition": "gpu",
+    "nodes": "1",
+    "nt_per_node": "6",
+    "gpu_config": "gpu:k80:4",
+    "cpus_per_task": "2",
+    "query_cmd": "squeue --noheader --long --states=completing,running,pending,configuring -j ",
+    "keyarg": "job_state = "
+  }
+}
