@@ -21,7 +21,7 @@ def setupParserOptions():
                     help="Provide the path of the micrograph.star file.")
     ap.add_argument('-p', '--program', default='micassess',
                     help='The program to use to do micrograph assessment. Currently only supports mic_assess.')
-    ap.add_argument('-m', '--model', default='./models/micassess_051419.h5',
+    ap.add_argument('-m', '--model', default='/home/yilaili/codes/Automatic-preprocessing-COSMIC2/models/micassess_051419.h5',
                     help="Model file (.h5 file) for MicAssess.")
     ap.add_argument('-t', '--threshold', type=float, default=0.1,
                     help="Threshold for classification. Default is 0.1. Higher number will cause more good micrographs being classified as bad.")
@@ -101,10 +101,10 @@ def submit(**args):
     return job_id, query_cmd, keyarg
 
 def check_complete(job_id, query_cmd, keyarg):
-    ## Below: check every minute if the job has finished.
+    ## Below: check every 5 sec if the job has finished.
     state = check_state_comet(query_cmd, job_id, keyarg)
     start_time = time.time()
-    interval = 60
+    interval = 5
     i = 1
     while state!='completed':
         time.sleep(start_time + i*interval - time.time())
@@ -112,8 +112,9 @@ def check_complete(job_id, query_cmd, keyarg):
         i = i + 1
 
 def check_output_good(**args):
+    ## Disable all console outputs
     sys.stdout = open(os.devnull, "w")
-    sys.stderr = open(os.devnull, "w")    
+    sys.stderr = open(os.devnull, "w")
     wkdir = os.path.abspath(os.path.dirname(args['input']))
     os.chdir(wkdir)
     ## Below: check if the output is correct.
@@ -127,7 +128,6 @@ def check_output_good(**args):
             f.write('Submission job is done but the output may not be right. Please check.\n')
 
 if __name__ == '__main__':
-    ## Disable all console outputs
     args = setupParserOptions()
     job_id, query_cmd, keyarg = submit(**args)
     check_complete(job_id, query_cmd, keyarg)
