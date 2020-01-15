@@ -100,7 +100,7 @@ def submit(**args):
 
 def check_complete(job_id, query_cmd, keyarg):
     ## Below: check every minute if the job has finished.
-    state = check_state(query_cmd, job_id, keyarg)
+    state = check_state_comet(query_cmd, job_id, keyarg)
     start_time = time.time()
     interval = 60
     i = 1
