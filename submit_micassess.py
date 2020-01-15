@@ -8,6 +8,7 @@ from check_if_done import check_state_comet
 import time
 import shutil
 from write_submit_script_comet import write_submit_comet
+import re
 
 '''
 Submit MicAssess job.
@@ -89,8 +90,8 @@ def submit(**args):
 
     cmd='sbatch ' + submit_name
     job_id = subprocess.check_output(cmd, shell=True)
-    job_id = job_id[:-1]
     job_id = job_id.decode("utf-8")
+    job_id = re.findall('job (\d+)', job_id)[0]
     with open('%s_log.txt' %args['program'], 'a+') as f:
         f.write('Job submitted. Job ID is %s.\n' %(job_id))
     query_cmd = cluster_config[cluster]['query_cmd']

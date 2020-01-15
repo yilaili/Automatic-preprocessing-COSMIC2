@@ -1,6 +1,6 @@
 #!/bin/bash
-#SBATCH -o %%j_stdout.txt  # Name of stdout output file(%%j expands to jobId)
-#SBATCH -e %%j_stderr.txt  # Name of stderr output file(%%j expands to jobId)
+#SBATCH -o stdout.txt  # Name of stdout output file(%%j expands to jobId)
+#SBATCH -e stderr.txt  # Name of stderr output file(%%j expands to jobId)
 #SBATCH --partition=$$partition     # submit to the ‘large’ queue for jobs > 256 nodes
 #SBATCH -J $$job_name    # Job name
 #SBATCH -t $$walltime     # Run time (hh:mm:ss)
