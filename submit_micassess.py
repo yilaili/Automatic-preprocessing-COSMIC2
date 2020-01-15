@@ -9,6 +9,7 @@ import time
 import shutil
 from write_submit_script_comet import write_submit_comet
 import re
+import sys
 
 '''
 Submit MicAssess job.
@@ -125,6 +126,9 @@ def check_output_good(**args):
 
 #%%############################################################################
 if __name__ == '__main__':
+    ## Disable all console outputs
+    sys.stdout = open(os.devnull, "w")
+    sys.stderr = open(os.devnull, "w")
     args = setupParserOptions()
     job_id, query_cmd, keyarg = submit(**args)
     check_complete(job_id, query_cmd, keyarg)
