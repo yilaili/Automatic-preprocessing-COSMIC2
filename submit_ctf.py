@@ -86,8 +86,8 @@ def submit(**args):
     program = args['program']
     input = '-i %s ' %args['input']
     output = '-o %s ' %args['output']
-    stdout = '> run_%s.out ' %args['program']
-    stderr = '2> run_%s.err ' %args['program']
+    stdout = os.path.join(args['output'], '> run_%s.out ' %args['program'])
+    stderr = os.path.join(args['output'], '2> run_%s.err ' %args['program'])
     module = 'module load relion/3.0.8_gpu_k80'
     conda_env = ''
     command = 'mpirun -np 24 relion_run_ctffind_mpi '
@@ -100,6 +100,7 @@ def submit(**args):
                         input, output, stdout, stderr, \
                         module, conda_env, command, parameters)
 
+    os.chdir(wkdir)
     cmd='sbatch ' + submit_name
     job_id = subprocess.check_output(cmd, shell=True)
     job_id = job_id.decode("utf-8")
