@@ -84,8 +84,8 @@ def submit(**args):
     user_email = args['user_email']
     walltime = args['walltime']
     program = args['program']
-    input = '-i %s ' %args['input']
-    output = '-o %s ' %args['output']
+    input = '--i %s ' %args['input']
+    output = '--o %s ' %args['output']
     stdout = os.path.join(args['output'], '> run_%s.out ' %args['program'])
     stderr = os.path.join(args['output'], '2> run_%s.err ' %args['program'])
     module = 'module load relion/3.0.8_gpu_k80'
