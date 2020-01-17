@@ -50,8 +50,9 @@ def editparameters(s, CS, HT, XMAG, DStep):
     .replace('$$DStep', DStep)
     return new_s
 
-def check_good(ori_star, ctf_star):
+def check_good(wkdir, ori_star, ctf_star):
     ### Currenly only work for ctffind4 in relion.
+    os.chdir(wkdir)
     cmd = 'grep \'.mrc\' %s | wc -l' %ori_star
     ori_lines = int(subprocess.check_output(cmd, shell=True))
     cmd = 'grep \'.mrc\' %s | wc -l' %ctf_star
@@ -86,8 +87,8 @@ def submit(**args):
     program = args['program']
     input = '--i %s ' %args['input']
     output = '--o %s ' %args['output']
-    stdout = os.path.join('> %s'%args['output'], 'run_%s.out'%args['program'])
-    stderr = os.path.join('> %s'%args['output'], 'run_%s.err'%args['program'])
+    stdout = os.path.join('> %s'%args['output'], 'run_%s.out '%args['program'])
+    stderr = os.path.join('2> %s'%args['output'], 'run_%s.err '%args['program'])
     module = 'module load relion/3.0.8_gpu_k80'
     conda_env = ''
     command = 'mpirun -np 24 relion_run_ctffind_mpi '
@@ -127,7 +128,7 @@ def check_complete(job_id, query_cmd, keyarg, **args):
     ## Below: check if the ctf output is correct.
     with open('%s_log.txt' %args['program'], 'a+') as f:
         f.write('Checking outputs....\n')
-        isgood = check_good(args['input'], os.path.join(args['output'], 'micrographs_ctf.star'))
+        isgood = check_good(wkdir, args['input'], os.path.join(args['output'], 'micrographs_ctf.star'))
         if isgood:
             f.write('CTF estimation has finished.\n')
             print(os.path.join(args['output'], 'micrographs_ctf.star'), end='')
