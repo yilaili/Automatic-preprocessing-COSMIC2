@@ -11,49 +11,54 @@ from write_submit_script_comet import write_submit_comet
 import re
 
 '''
-Submit MicAssess job.
+Submit CTF estimation job.
+Inputs: 1. Path to the micrographs star file (micrographs.star),
+        2. Path to the directory where the CTF outputs are saved.
+Output: Path to the directory where the CTF outputs are saved.
 '''
-
+#%%############################################################################
 def setupParserOptions():
     ap = argparse.ArgumentParser()
     ap.add_argument('-i', '--input',
-                    help="Provide the path of the micrograph.star file.")
-    ap.add_argument('-p', '--program', default='micassess',
-                    help='The program to use to do micrograph assessment. Currently only supports mic_assess.')
-    ap.add_argument('-m', '--model', default='/home/yilaili/codes/Automatic-preprocessing-COSMIC2/models/micassess_051419.h5',
-                    help="Model file (.h5 file) for MicAssess.")
-    ap.add_argument('-t', '--threshold', type=float, default=0.1,
-                    help="Threshold for classification. Default is 0.1. Higher number will cause more good micrographs being classified as bad.")
-    ap.add_argument('-o', '--output', default='micrographs_micassess.star',
-                    help="Name of the output star file. Default is good_micrographs.star.")
-    ap.add_argument('-b', '--batch_size', type=int, default=32,
-                    help="Batch size used in prediction. Default is 32. If memory error/warning appears, try lower this number to 16, 8, or even lower.")
+                    help="Provide star file of the micrographs.")
+    ap.add_argument('-o', '--output',
+                    help="Path of output directory for ctf outputs to be located.")
+    ap.add_argument('-p', '--program', default='CTFFIND4',
+                    help='The program to use to do ctf estimation. Currently only supports CTFFIND4.')
+    ap.add_argument('--CS', help='Spherical aberration of the microscope')
+    ap.add_argument('--HT', help='Kev')
+    ap.add_argument('--XMAG', default='10000', help='Magnification')
+    ap.add_argument('--DStep', help='Pixel size')
     ap.add_argument('--template', default='comet_submit_template.sh',
                     help="Name of the submission template. Currently only supports comet_submit_template.sh")
     ap.add_argument('--cluster', default='comet',
                     help='The computer cluster the job will run on. Currently only supports comet.')
-    ap.add_argument('--jobname', default='MicAssess',
-                    help='Jobname on the submission script.')
+    ap.add_argument('--jobname', default='CTF', help='Jobname on the submission script.')
     ap.add_argument('--user_email',
                     help='User email address to send the notification to.')
     ap.add_argument('--walltime', default='01:00:00',
                     help='Expected max run time of the job.')
-    # ap.add_argument('-n', '--nodes', default='1',
+    # ap.add_argument('-n', '--nodes', default='5',
     #                 help='Number of nodes used in the computer cluster.')
     args = vars(ap.parse_args())
     return args
 
-def editparameters(s, model, threshold):
-    new_s = s.replace('$$model', model).replace('$$threshold', str(threshold))
+def editparameters(s, CS, HT, XMAG, DStep):
+    new_s = s.replace('$$CS', CS)\
+    .replace('$$HT', HT)\
+    .replace('$$XMAG', XMAG)\
+    .replace('$$DStep', DStep)
     return new_s
 
-def check_good(input, output):
-    '''
-    Check if output file exists.
-    '''
-    os.chdir(os.path.dirname(input))
-    return os.path.isfile(output)
+def check_good(ori_star, ctf_star):
+    ### Currenly only work for ctffind4 in relion.
+    cmd = 'grep \'.mrc\' %s | wc -l' %ori_star
+    ori_lines = int(subprocess.check_output(cmd, shell=True))
+    cmd = 'grep \'.mrc\' %s | wc -l' %ctf_star
+    ctf_lines = int(subprocess.check_output(cmd, shell=True))
+    return ori_lines < ctf_lines
 
+#%%############################################################################
 def submit(**args):
 
     cluster = args['cluster']
@@ -61,7 +66,7 @@ def submit(**args):
     wkdir = os.path.abspath(os.path.dirname(args['input']))
     submit_name = 'submit_%s.sh' %args['program']
     cluster_config_file='cluster_config.json'
-    job_config_file = 'micassess_config.json'
+    job_config_file = 'ctf_config.json'
 
     os.chdir(codedir)
     with open(cluster_config_file, 'r') as f:
@@ -77,10 +82,11 @@ def submit(**args):
     output = '-o %s ' %args['output']
     stdout = '> run_%s.out ' %args['program']
     stderr = '2> run_%s.err ' %args['program']
-    module = ' '
-    conda_env = 'conda activate cryoassess'
-    command = 'python /home/yilaili/codes/Automatic-preprocessing-COSMIC2/micassess.py '
-    parameters = editparameters(job_config[program]['parameters'], args['model'], args['threshold'])
+    module = 'module load relion/3.0.8_gpu_k80'
+    conda_env = ''
+    command = 'mpirun -np 24 relion_run_ctffind_mpi '
+    parameters = editparameters(job_config[program]['parameters'], \
+                                args['CS'], args['HT'], args['XMAG'], args['DStep'])
 
     write_submit_comet(codedir, wkdir, submit_name, \
                         jobname, user_email, walltime, \
@@ -99,35 +105,31 @@ def submit(**args):
     os.chdir(codedir) ## cd back to the directory of the code
     return job_id, query_cmd, keyarg
 
-def check_complete(job_id, query_cmd, keyarg):
-    ## Below: check every 5 sec if the job has finished.
-    state = check_state_comet(query_cmd, job_id, keyarg)
+def check_complete(job_id, query_cmd, keyarg, **args):
+    wkdir = os.path.abspath(os.path.dirname(args['input']))
+    os.chdir(wkdir)
+    ## Below: check every 10 seconds if the job has finished.
+    state = check_state(query_cmd, job_id, keyarg)
     start_time = time.time()
-    interval = 5
+    interval = 10
     i = 1
     while state!='completed':
         time.sleep(start_time + i*interval - time.time())
-        state = check_state_comet(query_cmd, job_id, keyarg)
+        state = check_state(query_cmd, job_id, keyarg)
         i = i + 1
-
-def check_output_good(**args):
-    ## Disable all console outputs
-    sys.stdout = open(os.devnull, "w")
-    sys.stderr = open(os.devnull, "w")
-    wkdir = os.path.abspath(os.path.dirname(args['input']))
-    os.chdir(wkdir)
-    ## Below: check if the output is correct.
+    ## Below: check if the ctf output is correct.
     with open('%s_log.txt' %args['program'], 'a+') as f:
         f.write('Checking outputs....\n')
-    isgood = check_good(args['input'], args['output'])
-    with open('%s_log.txt' %args['program'], 'a+') as f:
+        isgood = check_good(args['input'], os.path.join(args['output'], 'micrographs_ctf.star'))
         if isgood:
-            f.write('Micrograph assessment has finished.\n')
+            f.write('CTF estimation has finished.\n')
+            print(os.path.join(args['output'], 'micrographs_ctf.star'), end='')
         else:
-            f.write('Submission job is done but the output may not be right. Please check.\n')
+            f.write('Submission job was done but the output may not be right. Please check.\n')
+            print('An error occured. Please check the log file.')
 
+#%%############################################################################
 if __name__ == '__main__':
     args = setupParserOptions()
     job_id, query_cmd, keyarg = submit(**args)
-    check_complete(job_id, query_cmd, keyarg)
-    check_output_good(**args)
+    check_complete(job_id, query_cmd, keyarg, **args)
