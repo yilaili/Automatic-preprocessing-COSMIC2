@@ -16,13 +16,13 @@ Inputs: 1. Path to the micrographs star file (micrographs.star),
         2. Path to the directory where the CTF outputs are saved.
 Output: Path to the directory where the CTF outputs are saved.
 '''
-#%%############################################################################
+
 def setupParserOptions():
     ap = argparse.ArgumentParser()
     ap.add_argument('-i', '--input',
                     help="Provide star file of the micrographs.")
-    ap.add_argument('-o', '--output',
-                    help="Path of output directory for ctf outputs to be located.")
+    ap.add_argument('-o', '--output', default='ctf',
+                    help="Output directory name for ctf outputs to be located.")
     ap.add_argument('-p', '--program', default='CTFFIND4',
                     help='The program to use to do ctf estimation. Currently only supports CTFFIND4.')
     ap.add_argument('--CS', help='Spherical aberration of the microscope')
@@ -58,7 +58,6 @@ def check_good(ori_star, ctf_star):
     ctf_lines = int(subprocess.check_output(cmd, shell=True))
     return ori_lines < ctf_lines
 
-#%%############################################################################
 def submit(**args):
 
     cluster = args['cluster']
@@ -67,6 +66,13 @@ def submit(**args):
     submit_name = 'submit_%s.sh' %args['program']
     cluster_config_file='cluster_config.json'
     job_config_file = 'ctf_config.json'
+
+    ## mkdir to setup the job
+    os.chdir(wkdir)
+    try:
+        shutil.rmtree(args['output'])
+    except OSError:
+        os.mkdir(args['output'])
 
     os.chdir(codedir)
     with open(cluster_config_file, 'r') as f:
@@ -128,7 +134,6 @@ def check_complete(job_id, query_cmd, keyarg, **args):
             f.write('Submission job was done but the output may not be right. Please check.\n')
             print('An error occured. Please check the log file.')
 
-#%%############################################################################
 if __name__ == '__main__':
     args = setupParserOptions()
     job_id, query_cmd, keyarg = submit(**args)
