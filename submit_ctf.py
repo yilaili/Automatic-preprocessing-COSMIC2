@@ -57,7 +57,7 @@ def check_good(wkdir, ori_star, ctf_star):
     ori_lines = int(subprocess.check_output(cmd, shell=True))
     cmd = 'grep \'.mrc\' %s | wc -l' %ctf_star
     ctf_lines = int(subprocess.check_output(cmd, shell=True))
-    return ori_lines < ctf_lines
+    return ori_lines == ctf_lines
 
 def submit(**args):
 
@@ -127,9 +127,9 @@ def check_complete(job_id, query_cmd, keyarg, **args):
         state = check_state_comet(query_cmd, job_id, keyarg)
         i = i + 1
     ## Below: check if the ctf output is correct.
+    isgood = check_good(wkdir, args['input'], os.path.join(args['output'], 'micrographs_ctf.star'))
     with open('%s_log.txt' %args['program'], 'a+') as f:
         f.write('Checking outputs....\n')
-        isgood = check_good(wkdir, args['input'], os.path.join(args['output'], 'micrographs_ctf.star'))
         if isgood:
             f.write('CTF estimation has finished.\n')
             print(os.path.join(args['output'], 'micrographs_ctf.star'), end='')
