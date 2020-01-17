@@ -72,6 +72,7 @@ def submit(**args):
     os.chdir(wkdir)
     try:
         shutil.rmtree(args['output'])
+        os.mkdir(args['output'])
     except OSError:
         os.mkdir(args['output'])
 
