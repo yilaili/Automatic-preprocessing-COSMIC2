@@ -87,7 +87,7 @@ def submit(**args):
     program = args['program']
     cluster = args['cluster']
     codedir = os.path.abspath(os.path.join(os.path.realpath(sys.argv[0]), os.pardir))
-    wkdir = os.path.abspath(os.path.pardir(args['input']))
+    wkdir = os.path.abspath(os.path.join(args['input'], os.pardir))
     cluster_config_file='cluster_config.json'
     job_config_file = 'ppicking_config.json'
 
@@ -158,7 +158,7 @@ def submit(**args):
 
 def check_complete(job_id, query_cmd, keyarg, **args):
 
-    wkdir = os.path.abspath(os.path.pardir(args['input']))
+    wkdir = os.path.abspath(os.path.join(args['input'], os.pardir))
     os.chdir(wkdir)
     pixel_boxsize = str(int(int(args['boxsize']) / float(args['apix']))) # Convert boxsize from Angstrom to pixels
     suffix = program + '_d' + pixel_boxsize + 't' + args['thresh'] # suffix e.g.: cryolo_d130t0.3
