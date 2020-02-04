@@ -138,13 +138,13 @@ def submit(**args):
     edited_config = cryolo_editconfig(args['config'], pixel_boxsize)
     parameters = editparameters(job_config[program]['parameters'], \
                 edited_config, args['model'], args['thresh'], args['distance'])
-
+    os.chdir(codedir)
     write_submit_comet(codedir, wkdir, submit_name, \
                         jobname, user_email, walltime, \
                         job_config_file, program, \
                         input, output, stdout, stderr, \
                         module, conda_env, command, parameters)
-
+    os.chdir(wkdir)
     cmd='sbatch ' + submit_name
     job_id = subprocess.check_output(cmd, shell=True)
     job_id = job_id.decode("utf-8")
