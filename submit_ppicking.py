@@ -53,7 +53,7 @@ def setupParserOptions():
     args = vars(ap.parse_args())
     return args
 
-def editparameter(s, config, model, thresh, distance):
+def editparameters(s, config, model, thresh, distance):
     new_s = s.replace('$$config', config)\
     .replace('$$model', model)\
     .replace('$$thresh', thresh)\
