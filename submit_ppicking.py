@@ -7,6 +7,7 @@ import subprocess
 from check_if_done import check_state_comet
 import time
 import shutil
+from shutil import copy2
 from write_submit_script_comet import write_submit_comet
 import re
 
