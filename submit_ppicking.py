@@ -161,6 +161,7 @@ def check_complete(job_id, query_cmd, keyarg, **args):
 
     wkdir = os.path.abspath(os.path.join(args['input'], os.pardir))
     os.chdir(wkdir)
+    program = args['program']
     pixel_boxsize = str(int(int(args['boxsize']) / float(args['apix']))) # Convert boxsize from Angstrom to pixels
     suffix = program + '_d' + pixel_boxsize + 't' + args['thresh'] # suffix e.g.: cryolo_d130t0.3
 
