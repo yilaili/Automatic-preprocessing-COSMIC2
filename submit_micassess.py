@@ -16,18 +16,21 @@ Submit MicAssess job.
 
 def setupParserOptions():
     ap = argparse.ArgumentParser()
+    ## General inputs
     ap.add_argument('-i', '--input',
                     help="Provide the path of the micrograph.star file.")
+    ap.add_argument('-o', '--output', default='micrographs_micassess.star',
+                    help="Name of the output star file. Default is good_micrographs.star.")
     ap.add_argument('-p', '--program', default='micassess',
                     help='The program to use to do micrograph assessment. Currently only supports mic_assess.')
+    ## Program specific parameters
     ap.add_argument('-m', '--model', default='/home/yilaili/codes/Automatic-preprocessing-COSMIC2/models/micassess_051419.h5',
                     help="Model file (.h5 file) for MicAssess.")
     ap.add_argument('-t', '--threshold', type=float, default=0.1,
                     help="Threshold for classification. Default is 0.1. Higher number will cause more good micrographs being classified as bad.")
-    ap.add_argument('-o', '--output', default='micrographs_micassess.star',
-                    help="Name of the output star file. Default is good_micrographs.star.")
     ap.add_argument('-b', '--batch_size', type=int, default=32,
                     help="Batch size used in prediction. Default is 32. If memory error/warning appears, try lower this number to 16, 8, or even lower.")
+    ## Cluster submission needed
     ap.add_argument('--template', default='comet_submit_template.sh',
                     help="Name of the submission template. Currently only supports comet_submit_template.sh")
     ap.add_argument('--cluster', default='comet',
@@ -36,7 +39,7 @@ def setupParserOptions():
                     help='Jobname on the submission script.')
     ap.add_argument('--user_email',
                     help='User email address to send the notification to.')
-    ap.add_argument('--walltime', default='01:00:00',
+    ap.add_argument('--walltime', default='05:00:00',
                     help='Expected max run time of the job.')
     # ap.add_argument('-n', '--nodes', default='1',
     #                 help='Number of nodes used in the computer cluster.')

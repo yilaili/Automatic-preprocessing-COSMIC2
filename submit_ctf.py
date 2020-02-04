@@ -19,12 +19,14 @@ Output: Path to the directory where the CTF outputs are saved.
 
 def setupParserOptions():
     ap = argparse.ArgumentParser()
+    ## General inputs
     ap.add_argument('-i', '--input',
                     help="Provide star file of the micrographs.")
     ap.add_argument('-o', '--output', default='ctf',
                     help="Output directory name for ctf outputs to be located.")
     ap.add_argument('-p', '--program', default='CTFFIND4',
                     help='The program to use to do ctf estimation. Currently only supports CTFFIND4.')
+    ## Program specific parameters                    
     ap.add_argument('--CS', help='Spherical aberration of the microscope')
     ap.add_argument('--HT', help='Kev')
     ap.add_argument('--XMAG', default='10000', help='Magnification')
@@ -34,10 +36,8 @@ def setupParserOptions():
     ap.add_argument('--cluster', default='comet',
                     help='The computer cluster the job will run on. Currently only supports comet.')
     ap.add_argument('--jobname', default='CTF', help='Jobname on the submission script.')
-    ap.add_argument('--user_email',
-                    help='User email address to send the notification to.')
-    ap.add_argument('--walltime', default='01:00:00',
-                    help='Expected max run time of the job.')
+    ap.add_argument('--user_email', help='User email address to send the notification to.')
+    ap.add_argument('--walltime', default='01:00:00', help='Expected max run time of the job.')
     # ap.add_argument('-n', '--nodes', default='5',
     #                 help='Number of nodes used in the computer cluster.')
     args = vars(ap.parse_args())
