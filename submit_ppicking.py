@@ -17,7 +17,7 @@ Inputs: 1. Path to the directory of the micrographs,
         2. Path to the directory where the outputs are saved,
         3. Boxsize of the particle,
         4. Minimum distance between the neighboring picked particles.
-           If not given, distance = 0.8 * boxsize.
+           If not given, distance = 0.5 * boxsize.
 Output: Path to the directory where the outputs are saved.
 '''
 
@@ -107,7 +107,7 @@ def submit(**args):
     os.chdir(codedir)
     # Below: copy the cryolo_config file to the wkdir.
     try:
-        copy2(config, wkdir)
+        copy2(args['config'], wkdir)
     except OSError:
         pass
 
