@@ -21,12 +21,12 @@ def setupParserOptions():
     ap = argparse.ArgumentParser()
     ## General inputs
     ap.add_argument('-i', '--input',
-                    help="Provide absolute path of the star file of the ctf corrected micrographs.")
+                    help="Provide the path of the star file of the ctf corrected micrographs.")
     ap.add_argument('-p', '--program', default='relion_extract',
                     help='The program to use to do particle extraction. Currently only supports relion_extract.')
-    ## Program specific parameters                    
+    ## Program specific parameters
     ap.add_argument('--coord_dir',
-                    help="Provide the absolute path of the PARENT DIRECORY of the directory that has coordinate files.")
+                    help="Provide the path of the PARENT DIRECORY of the directory that has coordinate files.")
     ap.add_argument('--coord_suffix', default='.star', help="Extension name of the coordinate file.")
     ap.add_argument('--part_dir', help="Name of the directory where the extracted particles are stored.")
     ap.add_argument('--part_star', help="Name of the star file of the extracted particles.")
