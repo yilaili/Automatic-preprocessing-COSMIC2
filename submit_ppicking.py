@@ -170,7 +170,7 @@ def check_complete(job_id, query_cmd, keyarg, **args):
     start_time = time.time()
     interval = 10
     i = 1
-    while state!='C':
+    while state!='completed':
         time.sleep(start_time + i*interval - time.time())
         state = check_state_comet(query_cmd, job_id, keyarg)
         i = i + 1

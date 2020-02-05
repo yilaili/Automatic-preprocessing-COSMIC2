@@ -26,11 +26,12 @@ def setupParserOptions():
                     help="Output directory name for ctf outputs to be located.")
     ap.add_argument('-p', '--program', default='CTFFIND4',
                     help='The program to use to do ctf estimation. Currently only supports CTFFIND4.')
-    ## Program specific parameters                    
+    ## Program specific parameters
     ap.add_argument('--CS', help='Spherical aberration of the microscope')
     ap.add_argument('--HT', help='Kev')
     ap.add_argument('--XMAG', default='10000', help='Magnification')
     ap.add_argument('--DStep', help='Pixel size')
+    ## Cluster submission needed
     ap.add_argument('--template', default='comet_submit_template.sh',
                     help="Name of the submission template. Currently only supports comet_submit_template.sh")
     ap.add_argument('--cluster', default='comet',
