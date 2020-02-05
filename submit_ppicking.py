@@ -79,7 +79,7 @@ def check_good(runout, wkdir):
     of the run_ppicker.out file.
     '''
     cmd = 'tail -5 '+ runout
-    last_line = subprocess.check_output(cmd, shell=True , cwd=wkdir).decode("utf-8")
+    last_line = subprocess.check_output(cmd, shell=True, cwd=wkdir).decode("utf-8")
     str = 'particles in total are found'
     return last_line.find(str) != -1
 
@@ -179,7 +179,7 @@ def check_complete(job_id, query_cmd, keyarg, **args):
     with open('%s_log.txt' %suffix, 'a+') as f:
         f.write('Submission job %s is done. Checking outputs....\n'%suffix)
     stdout = os.path.join('%s'%args['output'], 'run_%s.out '%args['program'])
-    print(os.getcwd())
+    os.chdir(wkdir)
     isgood = check_good(stdout, wkdir)
     if isgood:
         os.mkdir(os.path.join(args['output'], 'micrographs'))
