@@ -179,6 +179,7 @@ def check_complete(job_id, query_cmd, keyarg, **args):
     with open('%s_log.txt' %suffix, 'a+') as f:
         f.write('Submission job %s is done. Checking outputs....\n'%suffix)
     stdout = os.path.join('%s'%args['output'], 'run_%s.out '%args['program'])
+    print(os.getcwd())
     isgood = check_good(stdout, wkdir)
     if isgood:
         os.mkdir(os.path.join(args['output'], 'micrographs'))
