@@ -65,7 +65,7 @@ def submit(**args):
 
     cluster = args['cluster']
     codedir = os.path.abspath(os.path.join(os.path.realpath(sys.argv[0]), os.pardir))
-    wkdir = os.path.abspath(os.path.dirname(args['input']))
+    wkdir = os.path.abspath(os.path.join(os.path.dirname(args['input']), os.pardir))
     submit_name = 'submit_%s.sh' %args['program']
     cluster_config_file='cluster_config.json'
     job_config_file = 'extract_config.json'
