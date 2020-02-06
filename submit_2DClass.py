@@ -152,5 +152,5 @@ def check_output_good(**args):
 if __name__ == '__main__':
     args = setupParserOptions()
     job_id, query_cmd, keyarg = submit(**args)
-    check_complete(job_id, query_cmd, keyarg, **args)
+    check_complete(job_id, query_cmd, keyarg)
     check_output_good(**args)
