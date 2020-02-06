@@ -1,0 +1,16 @@
+{
+  "general": {
+    "input": "-i ",
+    "output": "-o ",
+    "stdout": "> run_2dassess.out ",
+    "stderr": "2> run_2dassess.err "
+  },
+  "micassess": {
+    "module": " ",
+    "extra": " ",
+    "conda_env": "conda activate cryoassess",
+    "command": "python /home/yilaili/codes/Automatic-preprocessing-COSMIC2/2dassess_pipeline.py ",
+    "parameters": "-m $$model -n $$name --starfile $$starfile --outfile $$outfile ",
+    "tail": " "
+  }
+}

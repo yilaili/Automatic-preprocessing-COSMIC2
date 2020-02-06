@@ -11,7 +11,7 @@ from write_submit_script_comet import write_submit_comet
 import re
 
 '''
-Submit MicAssess job.
+Submit 2DAssess job to comet.
 '''
 
 def setupParserOptions():
@@ -19,52 +19,55 @@ def setupParserOptions():
     ## General inputs
     ap.add_argument('-i', '--input',
                     help="Provide the path of the micrograph.star file.")
-    ap.add_argument('-o', '--output', default='micrographs_micassess.star',
-                    help="Name of the output star file. Default is good_micrographs.star.")
-    ap.add_argument('-p', '--program', default='micassess',
-                    help='The program to use to do micrograph assessment. Currently only supports micassess.')
+    ap.add_argument('-o', '--output', default='2DAssess',
+                    help="Name of the output star file. Default is 2DAssess.")
+    ap.add_argument('-p', '--program', default='2dassess',
+                    help='The program to use to do micrograph assessment. Currently only supports 2dassess.')
     ## Program specific parameters
-    ap.add_argument('-m', '--model', default='/home/yilaili/codes/Automatic-preprocessing-COSMIC2/models/micassess_051419.h5',
-                    help="Model file (.h5 file) for MicAssess.")
-    ap.add_argument('-t', '--threshold', type=float, default=0.1,
-                    help="Threshold for classification. Default is 0.1. Higher number will cause more good micrographs being classified as bad.")
-    ap.add_argument('-b', '--batch_size', type=int, default=32,
-                    help="Batch size used in prediction. Default is 32. If memory error/warning appears, try lower this number to 16, 8, or even lower.")
+    ap.add_argument('-m', '--model', default='/home/yilaili/codes/Automatic-preprocessing-COSMIC2/models/2dassess_062119.h5',
+                    help="Model file (.h5 file) for 2DAssess.")
+    ap.add_argument('--starfile',
+                    help="Corresponding _model.star file for the input mrc file.")
+    ap.add_argument('-n', '--name',
+                    help="Name (prefix) of the particle.")
+    ap.add_argument('--outfile', default='good_part_frac.txt',
+                    help="Output file to store the fraction of the good particles. Default is good_part_frac.txt.")
     ## Cluster submission needed
     ap.add_argument('--template', default='comet_submit_template.sh',
                     help="Name of the submission template. Currently only supports comet_submit_template.sh")
     ap.add_argument('--cluster', default='comet',
                     help='The computer cluster the job will run on. Currently only supports comet.')
-    ap.add_argument('--jobname', default='MicAssess',
+    ap.add_argument('--jobname', default='2DAssess',
                     help='Jobname on the submission script.')
     ap.add_argument('--user_email',
                     help='User email address to send the notification to.')
-    ap.add_argument('--walltime', default='05:00:00',
+    ap.add_argument('--walltime', default='01:00:00',
                     help='Expected max run time of the job.')
     # ap.add_argument('-n', '--nodes', default='1',
     #                 help='Number of nodes used in the computer cluster.')
     args = vars(ap.parse_args())
     return args
 
-def editparameters(s, model, threshold):
-    new_s = s.replace('$$model', model).replace('$$threshold', str(threshold))
+def editparameters(s, model, name, starfile, outfile):
+    new_s = s.replace('$$model', model).replace('$$name', name)\
+            .replace('$$starfile', starfile).replace('$$outfile', outfile)
     return new_s
 
-def check_good(output):
+def check_good(outfile):
     '''
-    Check if output file exists.
+    Check if outfile exists.
     '''
     # os.chdir(os.path.dirname(input))
-    return os.path.isfile(output)
+    return os.path.isfile(outfile)
 
 def submit(**args):
 
     cluster = args['cluster']
     codedir = os.path.abspath(os.path.join(os.path.realpath(sys.argv[0]), os.pardir))
-    wkdir = os.path.abspath(os.path.dirname(args['input']))
+    wkdir = os.path.abspath(os.path.join(os.path.dirname(args['input'], os.pardir, os.pardir)))
     submit_name = 'submit_%s.sh' %args['program']
     cluster_config_file='cluster_config.json'
-    job_config_file = 'micassess_config.json'
+    job_config_file = '2dassess_config.json'
 
     os.chdir(codedir)
     with open(cluster_config_file, 'r') as f:
@@ -78,12 +81,14 @@ def submit(**args):
     program = args['program']
     input = '-i %s ' %args['input']
     output = '-o %s ' %args['output']
-    stdout = '> run_%s.out ' %args['program']
-    stderr = '2> run_%s.err ' %args['program']
+    stdout = os.path.join('> %s'%args['output'], 'run_%s.out'%args['program'])
+    stderr = os.path.join('> %s'%args['output'], 'run_%s.err' %args['program'])
+    stderr = '> %s ' %stderr
     module = ' '
     conda_env = 'conda activate cryoassess'
-    command = 'python /home/yilaili/codes/Automatic-preprocessing-COSMIC2/micassess.py '
-    parameters = editparameters(job_config[program]['parameters'], args['model'], args['threshold'])
+    command = 'python /home/yilaili/codes/Automatic-preprocessing-COSMIC2/2dassess_pipeline.py '
+    parameters = editparameters(job_config[program]['parameters'], args['model'], \
+                                args['name'], args['starfile'], args['outfile'])
 
     write_submit_comet(codedir, wkdir, submit_name, \
                         jobname, user_email, walltime, \
@@ -103,10 +108,10 @@ def submit(**args):
     return job_id, query_cmd, keyarg
 
 def check_complete(job_id, query_cmd, keyarg):
-    ## Below: check every 5 sec if the job has finished.
+    ## Below: check every two sec if the job has finished.
     state = check_state_comet(query_cmd, job_id, keyarg)
     start_time = time.time()
-    interval = 5
+    interval = 2
     # i = 1
     # while state!='completed':
     #     time.sleep(start_time + i*interval - time.time())
@@ -120,16 +125,16 @@ def check_output_good(**args):
     ## Disable all console outputs
     sys.stdout = open(os.devnull, "w")
     sys.stderr = open(os.devnull, "w")
-    wkdir = os.path.abspath(os.path.dirname(args['input']))
+    wkdir = os.path.abspath(os.path.join(os.path.dirname(args['input'], os.pardir, os.pardir)))
     os.chdir(wkdir)
-    print(wkdir)
+    # print(wkdir)
     ## Below: check if the output is correct.
     with open('%s_log.txt' %args['program'], 'a+') as f:
         f.write('Checking outputs....\n')
-    isgood = check_good(args['output'])
+    isgood = check_good(args['outfile'])
     with open('%s_log.txt' %args['program'], 'a+') as f:
         if isgood:
-            f.write('Micrograph assessment has finished.\n')
+            f.write('2DAssess has finished.\n')
         else:
             f.write('Submission job is done but the output may not be right. Please check.\n')
 

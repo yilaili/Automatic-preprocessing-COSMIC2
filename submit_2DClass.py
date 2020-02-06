@@ -85,7 +85,7 @@ def submit(**args):
     submit_name = 'submit_%s_%s.sh' %(args['program'], specs)
     input = '--i %s '%args['input']
     output_dir = os.path.join(args['output'], specs)
-    output = '--o %s '%output_dir
+    output = '--o %s/run '%output_dir
     stdout = os.path.join('> %s'%output_dir, 'run_%s.out '%args['program'])
     stderr = os.path.join('2> %s'%output_dir, 'run_%s.err '%args['program'])
     module = 'module load relion/3.0.8_gpu_k80'
