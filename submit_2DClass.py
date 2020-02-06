@@ -38,7 +38,7 @@ def setupParserOptions():
                     help="Name of the submission template. Currently only supports comet_submit_template.sh")
     ap.add_argument('--cluster', default='comet',
                     help='The computer cluster the job will run on. Currently only supports comet.')
-    ap.add_argument('--jobname', default='2D Classification', help='Jobname on the submission script.')
+    ap.add_argument('--jobname', default='2DClassification', help='Jobname on the submission script.')
     ap.add_argument('--user_email', help='User email address to send the notification to.')
     ap.add_argument('--walltime', default='48:00:00', help='Expected max run time of the job.')
 
