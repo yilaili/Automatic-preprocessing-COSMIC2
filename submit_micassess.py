@@ -50,11 +50,11 @@ def editparameters(s, model, threshold):
     new_s = s.replace('$$model', model).replace('$$threshold', str(threshold))
     return new_s
 
-def check_good(input, output):
+def check_good(output):
     '''
     Check if output file exists.
     '''
-    os.chdir(os.path.dirname(input))
+    # os.chdir(os.path.dirname(input))
     return os.path.isfile(output)
 
 def submit(**args):
@@ -122,10 +122,11 @@ def check_output_good(**args):
     sys.stderr = open(os.devnull, "w")
     wkdir = os.path.abspath(os.path.dirname(args['input']))
     os.chdir(wkdir)
+    print(wkdir)
     ## Below: check if the output is correct.
     with open('%s_log.txt' %args['program'], 'a+') as f:
         f.write('Checking outputs....\n')
-    isgood = check_good(args['input'], args['output'])
+    isgood = check_good(args['output'])
     with open('%s_log.txt' %args['program'], 'a+') as f:
         if isgood:
             f.write('Micrograph assessment has finished.\n')
