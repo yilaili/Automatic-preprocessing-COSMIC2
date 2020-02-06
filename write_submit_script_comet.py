@@ -82,16 +82,16 @@ def write_submit_comet(codedir, wkdir, submit_name, \
     # wkdir is the directory where the submission file is written into
     # codedir is the directory where all the template files are
     cluster_config = editclusterconfig(jobname, user_email, walltime, \
-                                        cluster_config_file='cluster_config.json', \
-                                        cluster='comet', \
-                                        allocation_name='csd547', \
-                                        partition='gpu', \
-                                        nodes='1', \
-                                        nt_per_node='6', \
-                                        gpu_config='gpu:k80:4', \
-                                        cpus_per_task='2', \
-                                        query_cmd='squeue ', \
-                                        keyarg='job_state = ')
+                                        cluster_config_file=cluster_config_file, \
+                                        cluster=cluster, \
+                                        allocation_name=allocation_name, \
+                                        partition=partition, \
+                                        nodes=nodes, \
+                                        nt_per_node=nt_per_node, \
+                                        gpu_config=gpu_config, \
+                                        cpus_per_task=cpus_per_task, \
+                                        query_cmd=query_cmd, \
+                                        keyarg=keyarg)
 
     job_config = editjobconfig(job_config_file, \
                                 program, \
