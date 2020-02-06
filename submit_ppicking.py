@@ -154,7 +154,7 @@ def submit(**args):
         f.write('Job submitted. Job ID is %s.\n' %(job_id))
     query_cmd = cluster_config[cluster]['query_cmd']
     keyarg = cluster_config[cluster]['keyarg']
-    os.chdir(codedir) ## cd back to the directory of the code
+    # os.chdir(codedir) ## cd back to the directory of the code
     return job_id, query_cmd, keyarg
 
 
