@@ -151,5 +151,5 @@ def check_complete(job_id, query_cmd, keyarg, **args):
 
 if __name__ == '__main__':
     args = setupParserOptions()
-    job_id_list, query_cmd, keyarg = submit(**args)
+    job_id, query_cmd, keyarg = submit(**args)
     check_complete(job_id, query_cmd, keyarg, **args)

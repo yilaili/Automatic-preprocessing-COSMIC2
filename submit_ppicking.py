@@ -191,7 +191,7 @@ def check_complete(job_id, query_cmd, keyarg, **args):
         + ' ' + os.path.join(args['output'], 'micrographs')
         subprocess.call(cmd, shell=True)
         with open('%s_log.txt' %suffix, 'a+') as f:
-            f.write('Particle picking for %s has finished.\n'%suffix)
+            f.write('Particle picking job %s has finished.\n'%suffix)
         # print(args['output'], end='')
     else:
         with open('%s_log.txt' %suffix, 'a+') as f:
