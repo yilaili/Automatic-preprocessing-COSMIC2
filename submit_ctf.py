@@ -128,6 +128,7 @@ def check_complete(job_id, query_cmd, keyarg, **args):
         state = check_state_comet(query_cmd, job_id, keyarg)
         i = i + 1
     ## Below: check if the ctf output is correct.
+    os.chdir(wkdir)
     isgood = check_good(wkdir, args['input'], os.path.join(args['output'], 'micrographs_ctf.star'))
     with open('%s_log.txt' %args['program'], 'a+') as f:
         f.write('Checking outputs....\n')
