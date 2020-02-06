@@ -131,11 +131,15 @@ def check_complete(job_id, query_cmd, keyarg, **args):
     state = check_state(query_cmd, job_id, keyarg)
     start_time = time.time()
     interval = 10
-    i = 1
+    # i = 1
+    # while state!='completed':
+    #     time.sleep(start_time + i*interval - time.time())
+    #     state = check_state(query_cmd, job_id, keyarg)
+    #     i = i + 1
     while state!='completed':
-        time.sleep(start_time + i*interval - time.time())
-        state = check_state(query_cmd, job_id, keyarg)
-        i = i + 1
+        time.sleep(interval)
+        state = check_state_comet(query_cmd, job_id, keyarg)
+
     ## Below: check if the particle picking output is correct.
     isgood = check_good(args['part_dir'], args['coord_dir'])
     with open('%s_log.txt' %args['program'], 'a+') as f:

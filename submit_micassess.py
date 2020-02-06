@@ -107,11 +107,14 @@ def check_complete(job_id, query_cmd, keyarg):
     state = check_state_comet(query_cmd, job_id, keyarg)
     start_time = time.time()
     interval = 5
-    i = 1
+    # i = 1
+    # while state!='completed':
+    #     time.sleep(start_time + i*interval - time.time())
+    #     state = check_state_comet(query_cmd, job_id, keyarg)
+    #     i = i + 1
     while state!='completed':
-        time.sleep(start_time + i*interval - time.time())
+        time.sleep(interval)
         state = check_state_comet(query_cmd, job_id, keyarg)
-        i = i + 1
 
 def check_output_good(**args):
     ## Disable all console outputs

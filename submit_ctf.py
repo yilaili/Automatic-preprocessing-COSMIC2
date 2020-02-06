@@ -122,11 +122,14 @@ def check_complete(job_id, query_cmd, keyarg, **args):
     state = check_state_comet(query_cmd, job_id, keyarg)
     start_time = time.time()
     interval = 10
-    i = 1
+    # i = 1
+    # while state!='completed':
+    #     time.sleep(start_time + i*interval - time.time())
+    #     state = check_state_comet(query_cmd, job_id, keyarg)
+    #     i = i + 1
     while state!='completed':
-        time.sleep(start_time + i*interval - time.time())
+        time.sleep(interval)
         state = check_state_comet(query_cmd, job_id, keyarg)
-        i = i + 1
     ## Below: check if the ctf output is correct.
     os.chdir(wkdir)
     isgood = check_good(wkdir, args['input'], os.path.join(args['output'], 'micrographs_ctf.star'))
