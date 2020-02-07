@@ -64,7 +64,7 @@ def submit(**args):
 
     cluster = args['cluster']
     codedir = os.path.abspath(os.path.join(os.path.realpath(sys.argv[0]), os.pardir))
-    wkdir = os.path.abspath(os.path.join(os.path.dirname(args['input'], os.pardir, os.pardir)))
+    wkdir = os.path.abspath(os.path.join(os.path.dirname(args['input']), os.pardir, os.pardir))
     submit_name = 'submit_%s.sh' %args['program']
     cluster_config_file='cluster_config.json'
     job_config_file = '2dassess_config.json'
@@ -125,7 +125,7 @@ def check_output_good(**args):
     ## Disable all console outputs
     sys.stdout = open(os.devnull, "w")
     sys.stderr = open(os.devnull, "w")
-    wkdir = os.path.abspath(os.path.join(os.path.dirname(args['input'], os.pardir, os.pardir)))
+    wkdir = os.path.abspath(os.path.join(os.path.dirname(args['input']), os.pardir, os.pardir))
     os.chdir(wkdir)
     # print(wkdir)
     ## Below: check if the output is correct.
