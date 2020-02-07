@@ -143,8 +143,8 @@ def evaluate(wkdir, good_idx, **args):
             good_frac = good_frac + float(star_df.iloc[i,1])
     print(good_frac)
     with open(args['outfile'], 'a+') as f:
-        f.write(args['name'], '\n')
-        f.write(str(good_frac), '\n')
+        f.write('%s\n'%args['name'])
+        f.write('%s\n'%str(good_frac))
         f.write(', '.join(good_idx))
     return good_frac
 
