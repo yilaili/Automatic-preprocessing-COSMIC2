@@ -150,7 +150,7 @@ if __name__ == '__main__':
     args = setupParserOptions()
     wkdir = os.path.abspath(os.path.join(os.path.dirname(args['input']), os.pardir, os.pardir))
     args['model'] = os.path.abspath(args['model'])
-    os.chdir(start_dir)
+    os.chdir(wkdir)
     save_mrcs(wkdir, **args)
     good_idx = predict(**args)
     evaluate(good_idx, **args)

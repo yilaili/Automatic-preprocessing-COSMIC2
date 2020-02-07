@@ -63,7 +63,8 @@ def save_mrcs(wkdir, **args):
     # os.makedirs(args['output'], exist_ok=True)
     os.mkdir(os.path.join(args['output'], 'data'))
 
-    avg_mrc = mrcfile.open(os.path.basename(args['input'])).data
+    # avg_mrc = mrcfile.open(os.path.basename(args['input'])).data
+    avg_mrc = mrcfile.open(args['input']).data
     if len(avg_mrc.shape) == 3:
         num_part = avg_mrc.shape[0]
     elif len(avg_mrc.shape) == 2:
