@@ -82,8 +82,7 @@ def submit(**args):
     input = '-i %s ' %args['input']
     output = '-o %s ' %args['output']
     stdout = os.path.join('> %s'%args['output'], 'run_%s.out'%args['program'])
-    stderr = os.path.join('> %s'%args['output'], 'run_%s.err' %args['program'])
-    stderr = '> %s ' %stderr
+    stderr = os.path.join('2> %s'%args['output'], 'run_%s.err' %args['program'])
     module = ' '
     conda_env = 'conda activate cryoassess'
     command = 'python /home/yilaili/codes/Automatic-preprocessing-COSMIC2/2dassess_pipeline.py '
