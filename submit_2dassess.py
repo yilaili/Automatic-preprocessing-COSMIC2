@@ -74,7 +74,7 @@ def submit(**args):
         shutil.rmtree(args['output'])
     except OSError:
         pass
-    os.makedirs(args['output'], exist_ok=True)    
+    os.makedirs(args['output'], exist_ok=True)
 
     os.chdir(codedir)
     with open(cluster_config_file, 'r') as f:
@@ -88,8 +88,8 @@ def submit(**args):
     program = args['program']
     input = '-i %s ' %args['input']
     output = '-o %s ' %args['output']
-    stdout = os.path.join('> %s'%args['output'], 'run_%s.out'%args['program'])
-    stderr = os.path.join('2> %s'%args['output'], 'run_%s.err' %args['program'])
+    stdout = os.path.join('> %s'%args['output'], 'run_%s.out '%args['program'])
+    stderr = os.path.join('2> %s'%args['output'], 'run_%s.err ' %args['program'])
     module = ' '
     conda_env = 'conda activate cryoassess'
     command = 'python /home/yilaili/codes/Automatic-preprocessing-COSMIC2/2dassess_pipeline.py '
