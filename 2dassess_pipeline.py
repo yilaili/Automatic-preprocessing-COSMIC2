@@ -137,7 +137,7 @@ def evaluate(wkdir, good_idx, **args):
     os.chdir(wkdir)
     good_frac = 0
     star_df = class2d_star2df(args['starfile'])
-    for i in range(star_df):
+    for i in range(len(star_df)):
         idx = int(re.split('@', star_df.iloc[i,0])[0])
         if str(idx) in good_idx:
             good_frac = good_frac + float(star_df.iloc[i,1])
