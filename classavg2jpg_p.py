@@ -60,7 +60,7 @@ def save_mrcs(**args):
         shutil.rmtree(args['output'])
     except OSError:
         pass
-    os.mkdir(args['output'])
+    os.makedirs(args['output'], exist_ok=True)
     os.mkdir(os.path.join(args['output'], 'data'))
 
     avg_mrc = mrcfile.open(os.path.basename(args['input'])).data
