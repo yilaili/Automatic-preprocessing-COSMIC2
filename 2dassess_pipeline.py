@@ -145,7 +145,7 @@ def evaluate(wkdir, good_idx, **args):
     with open(args['outfile'], 'a+') as f:
         f.write('%s\n'%args['name'])
         f.write('%s\n'%str(good_frac))
-        f.write(', '.join(good_idx))
+        f.write((', '.join(good_idx) + '\n'))
     return good_frac
 
 if __name__ == '__main__':

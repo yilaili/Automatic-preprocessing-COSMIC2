@@ -12,15 +12,19 @@ import re
 
 '''
 Submit 2DAssess job to comet.
+Will loop through all the subdirectories in the 2DClass folder and submit multiple
+corresponding 2DAssess jobs.
 '''
 
 def setupParserOptions():
     ap = argparse.ArgumentParser()
     ## General inputs
     ap.add_argument('-i', '--input',
-                    help="Provide the path of the micrograph.star file.")
+                    help="Provide the path of the Relion 2d classification job outputted by the pipeline.")
+    ap.add_argument('--mrcs_name',
+                    help="Provide the name of the mrcs file (must be the same name for all subdirs) outputted by relion 2d classification.")
     ap.add_argument('-o', '--output', default='2DAssess',
-                    help="Name of the output star file. Default is 2DAssess.")
+                    help="Name of the output PARENT directory. Default is 2DAssess.")
     ap.add_argument('-p', '--program', default='2dassess',
                     help='The program to use to do micrograph assessment. Currently only supports 2dassess.')
     ## Program specific parameters
@@ -64,17 +68,21 @@ def submit(**args):
 
     cluster = args['cluster']
     codedir = os.path.abspath(os.path.join(os.path.realpath(sys.argv[0]), os.pardir))
-    wkdir = os.path.abspath(os.path.join(os.path.dirname(args['input']), os.pardir, os.pardir))
+    wkdir = os.path.abspath(os.path.join(args['input'], os.pardir))
     submit_name = 'submit_%s.sh' %args['program']
     cluster_config_file='cluster_config.json'
     job_config_file = '2dassess_config.json'
 
     os.chdir(wkdir)
-    try:
-        shutil.rmtree(args['output'])
-    except OSError:
-        pass
-    os.makedirs(args['output'], exist_ok=True)
+    dir_list = os.listdir(args['input'])
+    ## Make directories "2DAssess/diamxxxk200" for all available diamxxxk200 in 2DClass
+    for name in dir_list:
+        output_dir = os.path.join(args['output'], name)
+        try:
+            shutil.rmtree(output_dir)
+        except OSError:
+            pass
+        os.makedirs(output_dir, exist_ok=True)
 
     os.chdir(codedir)
     with open(cluster_config_file, 'r') as f:
@@ -86,6 +94,8 @@ def submit(**args):
     user_email = args['user_email']
     walltime = args['walltime']
     program = args['program']
+    args['input'] = os.path.join(args['input'], dir_list[0], args['mrcs_name'])
+    args['output'] = os.path.join(args['output'], dir_list[0])
     input = '-i %s ' %args['input']
     output = '-o %s ' %args['output']
     stdout = os.path.join('> %s'%args['output'], 'run_%s.out '%args['program'])
@@ -101,6 +111,14 @@ def submit(**args):
                         job_config_file, program, \
                         input, output, stdout, stderr, \
                         module, conda_env, command, parameters)
+
+    ## Edit submit file so that multiple 2DAssess will be submitted in the same script
+    with open(submit_name) as f:
+        full_cmd = f.readlines()[-1]
+    with open(submit_name, 'a+') as f:
+        for name in dir_list[1:]:
+            new_full_cmd = full_cmd.replace(dir_list[0], name)
+            f.write(new_full_cmd)
 
     cmd='sbatch ' + submit_name
     job_id = subprocess.check_output(cmd, shell=True)
