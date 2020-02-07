@@ -94,13 +94,13 @@ def submit(**args):
     user_email = args['user_email']
     walltime = args['walltime']
     program = args['program']
+    args['starfile'] = os.path.join(args['input'], dir_list[0], args['starfile'])
     args['input'] = os.path.join(args['input'], dir_list[0], args['mrcs_name'])
     args['output'] = os.path.join(args['output'], dir_list[0])
     input = '-i %s ' %args['input']
     output = '-o %s ' %args['output']
     stdout = os.path.join('> %s'%args['output'], 'run_%s.out '%args['program'])
     stderr = os.path.join('2> %s'%args['output'], 'run_%s.err ' %args['program'])
-    args['starfile'] = os.path.join(args['input'], dir_list[0], args['starfile'])
     module = ' '
     conda_env = 'conda activate cryoassess'
     command = 'python /home/yilaili/codes/Automatic-preprocessing-COSMIC2/2dassess_pipeline.py '
