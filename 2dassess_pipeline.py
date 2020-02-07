@@ -139,6 +139,7 @@ def evaluate(good_idx, **args):
         idx = int(re.split('@', star_df.iloc[i,0])[0])
         if str(idx) in good_idx:
             good_frac = good_frac + float(star_df.iloc[i,1])
+    print(good_frac)            
     with open(args['outfile'], 'a+') as f:
         f.write(args['name'], '\n')
         f.write(str(good_frac), '\n')
@@ -153,4 +154,5 @@ if __name__ == '__main__':
     os.chdir(wkdir)
     save_mrcs(wkdir, **args)
     good_idx = predict(**args)
-    evaluate(good_idx, **args)
+    print(good_idx)
+    good_frac = evaluate(good_idx, **args)

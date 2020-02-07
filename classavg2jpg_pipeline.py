@@ -70,7 +70,6 @@ def save_mrcs(wkdir, **args):
     elif len(avg_mrc.shape) == 2:
         num_part = 1
 
-
     for i in range(num_part):
         new_img = avg_mrc[i,:,:]
         if np.sum(new_img) > 1e-7 or np.sum(new_img) < -1e-7:
