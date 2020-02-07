@@ -69,6 +69,13 @@ def submit(**args):
     cluster_config_file='cluster_config.json'
     job_config_file = '2dassess_config.json'
 
+    os.chdir(wkdir)
+    try:
+        shutil.rmtree(args['output'])
+    except OSError:
+        pass
+    os.makedirs(args['output'], exist_ok=True)    
+
     os.chdir(codedir)
     with open(cluster_config_file, 'r') as f:
         cluster_config = json.load(f)
