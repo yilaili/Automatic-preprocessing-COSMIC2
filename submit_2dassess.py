@@ -31,9 +31,9 @@ def setupParserOptions():
     ap.add_argument('-m', '--model', default='/home/yilaili/codes/Automatic-preprocessing-COSMIC2/models/2dassess_062119.h5',
                     help="Model file (.h5 file) for 2DAssess.")
     ap.add_argument('--starfile',
-                    help="Corresponding _model.star file for the input mrc file.")
-    ap.add_argument('-n', '--name',
-                    help="Name (prefix) of the particle.")
+                    help="Name of the _model.star file for the input mrc file.")
+    # ap.add_argument('-n', '--name',
+    #                 help="Name (prefix) of the particle.")
     ap.add_argument('--outfile', default='good_part_frac.txt',
                     help="Output file to store the fraction of the good particles. Default is good_part_frac.txt.")
     ## Cluster submission needed
@@ -100,11 +100,12 @@ def submit(**args):
     output = '-o %s ' %args['output']
     stdout = os.path.join('> %s'%args['output'], 'run_%s.out '%args['program'])
     stderr = os.path.join('2> %s'%args['output'], 'run_%s.err ' %args['program'])
+    args['starfile'] = os.path.join(args['input'], dir_list[0], args['starfile'])
     module = ' '
     conda_env = 'conda activate cryoassess'
     command = 'python /home/yilaili/codes/Automatic-preprocessing-COSMIC2/2dassess_pipeline.py '
     parameters = editparameters(job_config[program]['parameters'], args['model'], \
-                                args['name'], args['starfile'], args['outfile'])
+                                dir_list[0], args['starfile'], args['outfile'])
 
     write_submit_comet(codedir, wkdir, submit_name, \
                         jobname, user_email, walltime, \
