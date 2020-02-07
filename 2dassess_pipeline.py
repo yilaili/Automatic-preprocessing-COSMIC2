@@ -142,6 +142,7 @@ def evaluate(good_idx, **args):
     with open(args['outfile'], 'a+') as f:
         f.write(args['name'], '\n')
         f.write(str(good_frac), '\n')
+        f.write(', '.join(good_idx))
     return good_frac
 
 if __name__ == '__main__':
