@@ -132,14 +132,15 @@ def predict(**args):
     # print('Good class averages indices are (starting from 1): ', end='')
     # print(', '.join(good_idx))
 
-def evaluate(good_idx, **args):
+def evaluate(wkdir, good_idx, **args):
+    os.chdir(wkdir)
     good_frac = 0
     star_df = class2d_star2df(args['starfile'])
     for i in range(star_df):
         idx = int(re.split('@', star_df.iloc[i,0])[0])
         if str(idx) in good_idx:
             good_frac = good_frac + float(star_df.iloc[i,1])
-    print(good_frac)            
+    print(good_frac)
     with open(args['outfile'], 'a+') as f:
         f.write(args['name'], '\n')
         f.write(str(good_frac), '\n')
@@ -147,12 +148,11 @@ def evaluate(good_idx, **args):
     return good_frac
 
 if __name__ == '__main__':
-    start_dir = os.getcwd()
+    # start_dir = os.getcwd()
     args = setupParserOptions()
     wkdir = os.path.abspath(os.path.join(os.path.dirname(args['input']), os.pardir, os.pardir))
     args['model'] = os.path.abspath(args['model'])
     os.chdir(wkdir)
     save_mrcs(wkdir, **args)
     good_idx = predict(**args)
-    print(good_idx)
-    good_frac = evaluate(good_idx, **args)
+    evaluate(wkdir, good_idx, **args)
