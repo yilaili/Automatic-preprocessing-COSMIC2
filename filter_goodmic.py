@@ -65,7 +65,7 @@ def filter_bad(good_star, input, output):
     for f in mrc_list:
         ff = os.path.join(input, f)
         if ff not in good_mic_list:
-            print(f)
+            # print(f)
             os.remove(os.path.join(output, f))
 
 def main(**args):
