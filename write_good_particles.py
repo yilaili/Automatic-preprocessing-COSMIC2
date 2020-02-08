@@ -42,6 +42,7 @@ def star2df(starfile):
     star_df = pd.DataFrame(star_df)
     star_df = star_df.dropna()
     star_df.columns = keys
+    print(keys)
 
     return star_df
 
@@ -79,7 +80,7 @@ def write_good_particles_star(class_data_star, good_class_idx, good_particles_st
     bad_particles_idx = []
     class_data_df = star2df(class_data_star)
     for i in range(len(class_data_df)):
-        if str(int(class_data_df['_rlnClassNumber #3\n'][i])) not in good_class_idx:
+        if str(int(class_data_df['_rlnClassNumber #3 \n'][i])) not in good_class_idx:
             bad_particles_idx.append(i)
     new_class_data_df = class_data_df.drop(badindex)
     df2star(new_class_data_df, good_particles_star)
