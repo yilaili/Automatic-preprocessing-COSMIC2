@@ -72,7 +72,7 @@ def main(**args):
     wkdir = os.path.abspath(os.path.join(args['input'], os.pardir))
     os.chdir(wkdir)
     prepare(wkdir, args['input'], args['output'])
-    filter_bad(args['good_star'], args['output'])
+    filter_bad(args['good_star'], args['input'], args['output'])
 
 if __name__ == '__main__':
     args = setupParserOptions()
