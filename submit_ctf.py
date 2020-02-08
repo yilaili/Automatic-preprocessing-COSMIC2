@@ -118,10 +118,10 @@ def submit(**args):
 def check_complete(job_id, query_cmd, keyarg, **args):
     wkdir = os.path.abspath(os.path.dirname(args['input']))
     os.chdir(wkdir)
-    ## Below: check every 10 seconds if the job has finished.
+    ## Below: check every 2 seconds if the job has finished.
     state = check_state_comet(query_cmd, job_id, keyarg)
     start_time = time.time()
-    interval = 10
+    interval = 2
     # i = 1
     # while state!='completed':
     #     time.sleep(start_time + i*interval - time.time())
@@ -137,7 +137,7 @@ def check_complete(job_id, query_cmd, keyarg, **args):
         f.write('Checking outputs....\n')
         if isgood:
             f.write('CTF estimation has finished.\n')
-            print(os.path.join(args['output'], 'micrographs_ctf.star'), end='')
+            # print(os.path.join(args['output'], 'micrographs_ctf.star'), end='')
         else:
             f.write('Submission job was done but the output may not be right. Please check.\n')
             print('An error occured. Please check the log file.')

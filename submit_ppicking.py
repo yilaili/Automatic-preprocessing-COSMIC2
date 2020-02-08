@@ -166,10 +166,10 @@ def check_complete(job_id, query_cmd, keyarg, **args):
     pixel_boxsize = str(int(int(args['boxsize']) / float(args['apix']))) # Convert boxsize from Angstrom to pixels
     suffix = program + '_d' + pixel_boxsize + 't' + args['thresh'] # suffix e.g.: cryolo_d130t0.3
 
-    ## Below: check every 10 seconds if the job has finished.
+    ## Below: check every 2 seconds if the job has finished.
     state = check_state_comet(query_cmd, job_id, keyarg)
     start_time = time.time()
-    interval = 10
+    interval = 2
     # i = 1
     # while state!='completed':
     #     time.sleep(start_time + i*interval - time.time())

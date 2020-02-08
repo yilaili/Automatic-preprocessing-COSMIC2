@@ -121,10 +121,10 @@ def submit(**args):
 
 
 def check_complete(job_id, query_cmd, keyarg):
-    ## Below: check every 10 seconds if the job has finished.
+    ## Below: check every 2 seconds if the job has finished.
     state = check_state_comet(query_cmd, job_id, keyarg)
     start_time = time.time()
-    interval = 10
+    interval = 2
     # i = 1
     # while state!='completed':
     #     time.sleep(start_time + i*interval - time.time())
