@@ -58,16 +58,15 @@ def star2df(starfile):
 
     return star_df
 
-def filter_bad(good_star, output):
+def filter_bad(good_star, input, output):
     good_mic_df = star2df(good_star)
     good_mic_list = good_mic_df['_rlnMicrographName\n'].tolist()
-    print(good_mic_list)
     mrc_list = os.listdir(output)
     for f in mrc_list:
-        f = os.path.join(output, f)
+        f = os.path.join(input, f)
         if f not in good_mic_list:
             print(f)
-            os.remove(f)
+            os.remove(os.path.join(output, f))
 
 def main(**args):
     wkdir = os.path.abspath(os.path.join(args['input'], os.pardir))
