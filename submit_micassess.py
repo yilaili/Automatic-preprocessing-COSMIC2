@@ -20,7 +20,7 @@ def setupParserOptions():
     ap.add_argument('-i', '--input',
                     help="Provide the path of the micrograph.star file.")
     ap.add_argument('-o', '--output', default='micrographs_micassess.star',
-                    help="Name of the output star file. Default is good_micrographs.star.")
+                    help="Name of the output star file. Default is micrographs_micassess.star.")
     ap.add_argument('-p', '--program', default='micassess',
                     help='The program to use to do micrograph assessment. Currently only supports micassess.')
     ## Program specific parameters

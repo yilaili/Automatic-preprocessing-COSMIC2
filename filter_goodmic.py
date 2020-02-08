@@ -33,7 +33,7 @@ def prepare(wkdir, input, output):
     except OSError:
         os.mkdir(output)
     input_mrc = os.path.join(input, '*.mrc')
-    cmd = 'ln -s %s %s'%(input_mrc, output)
+    cmd = 'ln %s %s'%(input_mrc, output)
     subprocess.run(cmd, shell=True)
 
 def star2df(starfile):

@@ -33,8 +33,8 @@ def setupParserOptions():
                     help="Input directory of the micrographs in mrc format. Cannot contain other directories inside (excluding directories made by MicAssess).")
     ap.add_argument('-m', '--model', default='./models/micassess_051419.h5',
                     help='Path to the model.h5 file.')
-    ap.add_argument('-o', '--output', default='good_micrographs.star',
-                    help="Name of the output star file. Default is good_micrographs.star.")
+    ap.add_argument('-o', '--output', default='micrographs_micassess.star',
+                    help="Name of the output star file. Default is micrographs_micassess.star.")
     ap.add_argument('-b', '--batch_size', type=int, default=32,
                     help="Batch size used in prediction. Default is 32. If memory error/warning appears, try lower this number to 16, 8, or even lower.")
     ap.add_argument('-t', '--threshold', type=float, default=0.1,
