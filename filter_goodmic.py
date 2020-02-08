@@ -64,7 +64,7 @@ def filter_bad(good_star, output):
     mrc_list = os.listdir(output)
     for f in mrc_list:
         if f not in good_mic_list:
-            os.remove(f)
+            os.remove(os.path.join(output, f))
 
 def main(**args):
     wkdir = os.path.abspath(os.path.join(args['input'], os.pardir))
