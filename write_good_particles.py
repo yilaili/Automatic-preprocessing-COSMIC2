@@ -23,6 +23,41 @@ def setupParserOptions():
     args = vars(ap.parse_args())
     return args
 
+def star2df(starfile):
+    with open(starfile) as f:
+        star = f.readlines()
+
+    for i in range(len(star)):
+        if 'loop_' in star[i]:
+            start_idx = i
+            break
+    key_idx = []
+    for j in range(start_idx+1, len(star)):
+        if star[j].startswith('_'):
+            key_idx.append(j)
+
+    keys = [star[ii] for ii in key_idx]
+    star_df = star[1+key_idx[-1]:]
+    star_df = [x.split() for x in star_df]
+    star_df = pd.DataFrame(star_df)
+    star_df = star_df.dropna()
+    star_df.columns = keys
+
+    return star_df
+
+def df2star(star_df, star_name):
+    header = ['data_ \n', '\n', 'loop_ \n']
+    keys = star_df.columns.tolist()
+
+    with open(star_name, 'w') as f:
+        for l_0 in header:
+            f.write(l_0)
+        for l_1 in keys:
+            f.write(l_1)
+        for i in range(len(star_df)):
+            s = '  '.join(star_df.iloc[i].tolist())
+            f.write(s + ' \n')
+
 def read_goodfrac(good_part_frac):
 # From good_part_frac file, find the best subdirectory by finding the maximum good particle fraction.
     with open(good_part_frac) as f:
@@ -35,42 +70,38 @@ def read_goodfrac(good_part_frac):
             good_class_idx = a[i+1].rstrip().split(",")
     return max_good_frac, best_subdir, good_class_idx
 
-def save_header(class_data_star):
-    with open(class_data_star) as star:
-        header = star.readlines()[0:33]
-    return header
-
-def get_good_particles_list(class_data_star, good_class_idx):
-    good_particles_list = []
-    with open(class_data_star) as star:
-        class_data = star.readlines()[33:]
-        class_data_df = [x.split() for x in class_data]
-        class_data_df = pd.DataFrame(class_data_df)
-        class_data_df = class_data_df.dropna()
-
-    for i in range(len(class_data_df)):
-        particle = class_data_df.iloc[i,:].values
-        if str(int(particle[2])) in good_class_idx:
-            good_particles_list.append(class_data[i])
-    return good_particles_list
+# def save_header(class_data_star):
+#     with open(class_data_star) as star:
+#         header = star.readlines()[0:33]
+#     return header
 
 def write_good_particles_star(class_data_star, good_class_idx, good_particles_star):
-    header = save_header(class_data_star)
-    good_particles_list = get_good_particles_list(class_data_star, good_class_idx)
-    with open(good_particles_star, 'w') as f:
-        for l_0 in header:
-            f.write(l_0)
-        for l in good_particles_list:
-            f.write(l)
+    bad_particles_idx = []
+    class_data_df = star2df(class_data_star)
+    for i in range(len(class_data_df)):
+        if str(int(class_data_df['_rlnClassNumber #3\n'][i])) not in good_class_idx:
+            bad_particles_idx.append(i)
+    new_class_data_df = class_data_df.drop(badindex)
+    df2star(new_class_data_df, good_particles_star)
+        # particle = class_data_df.iloc[i,:].values
+        # if str(int(particle[2])) in good_class_idx:
+        #     good_particles_list.append(class_data[i])
+    # return good_particles_list
+
+# def write_good_particles_star(class_data_star, good_class_idx, good_particles_star):
+#     header = save_header(class_data_star)
+#     good_particles_list = get_good_particles_list(class_data_star, good_class_idx)
+#     with open(good_particles_star, 'w') as f:
+#         for l_0 in header:
+#             f.write(l_0)
+#         for l in good_particles_list:
+#             f.write(l)
 
 def main(**args):
     wkdir = os.path.abspath(os.path.join(args['2dclass'], os.pardir))
     os.chdir(wkdir)
     good_part_frac = args['good_part_frac']
     max_good_frac, best_subdir, good_class_idx = read_goodfrac(good_part_frac)
-    print(best_subdir)
-    print(max_good_frac)
-    print(good_class_idx)
     input = os.path.join(args['2dclass'], best_subdir, args['input'])
     write_good_particles_star(input, good_class_idx, args['output'])
 
