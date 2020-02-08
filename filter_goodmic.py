@@ -63,12 +63,9 @@ def filter_bad(good_star, output):
         if f not in good_mic_list:
             os.remove(f)
 
-def main(**args):
+if __name__ == '__main__':
+    args = setupParserOptions()
     wkdir = os.path.abspath(os.path.join(args['input'], os.pardir))
     os.chdir(wkdir)
     prepare(wkdir, args['input'], args['output'])
     filter_bad(args['good_star'], args['output'])
-
-if __name__ == '__main__':
-    args = setupParserOptions()
-    main(**args)
