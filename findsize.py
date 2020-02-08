@@ -23,23 +23,23 @@ def setupParserOptions():
 
 def readCBOX(input_dir, partnum_threshold=20):
     '''
-    Read all the .cbox files in the directory, return an np.array with all the 
+    Read all the .cbox files in the directory, return an np.array with all the
     estimated box sizes.
     Will skip the .cbox file with particle number lower than the partnum_threshold.
     '''
     input_dir = os.path.join(input_dir, 'CBOX')
     for cbox_file in os.listdir(input_dir):
-        with open(cbox_file) as f:
+        with open(os.path.join(input_dir, cbox_file)) as f:
             lines = f.readlines()
             if len(lines) >= 20:
                 x = np.array([float(l.split()[5]) for l in lines])
                 y = np.array([float(l.split()[6]) for l in lines])
                 cryolo_boxsizes = np.concatenate([x, y])
-    return cryolo_boxsizes            
-    
+    return cryolo_boxsizes
+
 def findsize(cryolo_boxsizes, apix, output):
     '''
-    Using cryolo_boxsizes (np array with all the estimated box sizes from crYOLO 
+    Using cryolo_boxsizes (np array with all the estimated box sizes from crYOLO
     cbox files), find the size of the particle and write the box size in Angstrom
     to the output file.
     In the output file:
@@ -64,9 +64,9 @@ def findsize(cryolo_boxsizes, apix, output):
         f.write('%d\n'%np.quantile(cryolo_boxsizes, 0.75))
         f.write('%d\n'%np.std(cryolo_boxsizes))
         f.write('%d\n'%len(cryolo_boxsizes))
-        f.write('%d\n'%len(tmp))        
+        f.write('%d\n'%len(tmp))
     return final_size
-        
+
 def main(**args):
     wkdir = os.path.abspath(os.path.join(args['input'], os.pardir))
     os.chdir(wkdir)
