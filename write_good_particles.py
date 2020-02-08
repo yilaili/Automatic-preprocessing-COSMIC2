@@ -9,6 +9,7 @@ import pandas as pd
 import pickle
 import argparse
 import shutil
+import re
 
 def setupParserOptions():
     ap = argparse.ArgumentParser()
@@ -67,8 +68,8 @@ def read_goodfrac(good_part_frac):
         if float(a[i]) > max_good_frac:
             max_good_frac = float(a[i])
             best_subdir = a[i-1].rstrip()
-            good_class_idx = a[i+1].rstrip().split(",")
-    print(good_class_idx)
+            good_class_idx = a[i+1].rstrip()
+            good_class_idx = re.split(' |, ', good_class_idx)
     return max_good_frac, best_subdir, good_class_idx
 
 # def save_header(class_data_star):
@@ -79,7 +80,6 @@ def read_goodfrac(good_part_frac):
 def write_good_particles_star(class_data_star, good_class_idx, good_particles_star):
     bad_particles_idx = []
     class_data_df = star2df(class_data_star)
-    print(len(class_data_df))
     for i in range(len(class_data_df)):
         if str(int(class_data_df['_rlnClassNumber #3 \n'][i])) not in good_class_idx:
             bad_particles_idx.append(i)
