@@ -150,7 +150,7 @@ def check_output_good(**args):
     ## Disable all console outputs
     sys.stdout = open(os.devnull, "w")
     sys.stderr = open(os.devnull, "w")
-    wkdir = os.path.abspath(os.path.join(os.path.dirname(args['input']), os.pardir, os.pardir))
+    wkdir = os.path.abspath(os.path.join(args['input'], os.pardir))
     os.chdir(wkdir)
     # print(wkdir)
     ## Below: check if the output is correct.
