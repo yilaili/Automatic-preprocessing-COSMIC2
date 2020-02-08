@@ -65,6 +65,7 @@ def filter_bad(good_star, output):
 
 if __name__ == '__main__':
     args = setupParserOptions()
+    print(args['input'])
     wkdir = os.path.abspath(os.path.join(args['input'], os.pardir))
     os.chdir(wkdir)
     prepare(wkdir, args['input'], args['output'])
