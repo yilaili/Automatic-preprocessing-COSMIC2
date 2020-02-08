@@ -52,7 +52,7 @@ def findsize(cryolo_boxsizes, apix, output):
         7th row: sample size used to calculate the final boxsize
     The final size is calculated by averaging the 10%-90% boxsize values.
     '''
-    cryolo_boxsizes = cryolo_boxsizes * apix # convert to Angstrom
+    cryolo_boxsizes = cryolo_boxsizes * float(apix) # convert to Angstrom
     idx_filter = (cryolo_boxsizes >= np.quantile(cryolo_boxsizes, 0.1)) & (cryolo_boxsizes <= np.quantile(cryolo_boxsizes, 0.9))
     tmp = cryolo_boxsizes[idx_filter]
     final_size = int(np.mean(tmp))
