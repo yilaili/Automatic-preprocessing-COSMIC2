@@ -13,7 +13,7 @@ The original folder remains untouched.
 
 def setupParserOptions():
     ap = argparse.ArgumentParser()
-    ap.add_argument('-i', '--input', default='micrographs',
+    ap.add_argument('-i', '--input',
                     help="Input directory of the micrographs in mrc format.")
     ap.add_argument('-g', '--good_star', default='micrographs_micassess.star',
                     help='The star file outputted by MicAssess.')
