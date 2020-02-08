@@ -63,8 +63,8 @@ def filter_bad(good_star, input, output):
     good_mic_list = good_mic_df['_rlnMicrographName\n'].tolist()
     mrc_list = os.listdir(output)
     for f in mrc_list:
-        f = os.path.join(input, f)
-        if f not in good_mic_list:
+        ff = os.path.join(input, f)
+        if ff not in good_mic_list:
             print(f)
             os.remove(os.path.join(output, f))
 
