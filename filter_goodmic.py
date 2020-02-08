@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-
 import os
 import pandas as pd
 import subprocess
+import argparse
 
 '''
 Using the star file to filter out bad micrographs in the directory containing the
