@@ -27,6 +27,7 @@ def readCBOX(input_dir, partnum_threshold=20):
     estimated box sizes.
     Will skip the .cbox file with particle number lower than the partnum_threshold.
     '''
+    cryolo_boxsizes = np.array([])
     input_dir = os.path.join(input_dir, 'CBOX')
     for cbox_file in os.listdir(input_dir):
         with open(os.path.join(input_dir, cbox_file)) as f:
@@ -34,7 +35,8 @@ def readCBOX(input_dir, partnum_threshold=20):
             if len(lines) >= 20:
                 x = np.array([float(l.split()[5]) for l in lines])
                 y = np.array([float(l.split()[6]) for l in lines])
-                cryolo_boxsizes = np.concatenate([x, y])
+                one_boxsizes = np.concatenate([x, y])
+        cryolo_boxsizes = np.concatenate([cryolo_boxsizes, one_boxsizes])
     return cryolo_boxsizes
 
 def findsize(cryolo_boxsizes, apix, output):
