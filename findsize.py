@@ -47,8 +47,8 @@ def findsize(cryolo_boxsizes, apix, output):
     In the output file:
         1st row: final estimated boxsize
         2nd row: mean of all boxsizes
-        3rd row: 0.25 quantile
-        4th row: 0.75 quantile
+        3rd row: 0.1 quantile
+        4th row: 0.9 quantile
         5th row: std of all boxsizes
         6th row: total sample size
         7th row: sample size used to calculate the final boxsize
@@ -62,8 +62,8 @@ def findsize(cryolo_boxsizes, apix, output):
     with open(output, 'w') as f:
         f.write('%d\n'%final_size)
         f.write('%d\n'%np.mean(cryolo_boxsizes))
-        f.write('%d\n'%np.quantile(cryolo_boxsizes, 0.25))
-        f.write('%d\n'%np.quantile(cryolo_boxsizes, 0.75))
+        f.write('%d\n'%np.quantile(cryolo_boxsizes, 0.1))
+        f.write('%d\n'%np.quantile(cryolo_boxsizes, 0.9))
         f.write('%d\n'%np.std(cryolo_boxsizes))
         f.write('%d\n'%len(cryolo_boxsizes))
         f.write('%d\n'%len(tmp))
