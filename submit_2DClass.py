@@ -40,7 +40,7 @@ def setupParserOptions():
                     help='The computer cluster the job will run on. Currently only supports comet.')
     ap.add_argument('--jobname', default='2DClassification', help='Jobname on the submission script.')
     ap.add_argument('--user_email', help='User email address to send the notification to.')
-    ap.add_argument('--walltime', default='72:00:00', help='Expected max run time of the job.')
+    ap.add_argument('--walltime', default='48:00:00', help='Expected max run time of the job.')
 
     args = vars(ap.parse_args())
     return args
