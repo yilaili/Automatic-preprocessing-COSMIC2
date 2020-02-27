@@ -88,9 +88,9 @@ def write_submit_comet(codedir, wkdir, submit_name, \
                         program, \
                         input, output, stdout, stderr, \
                         module, conda_env, command, parameters, \
-                        extra='', tail='', \
                         template_file, \
-                        cluster, cluster_config_file='cluster_config.json'):
+                        cluster, cluster_config_file='cluster_config.json', \
+                        extra='', tail=''):
     # wkdir is the directory where the submission file is written into
     # codedir is the directory where all the template files are
     if cluster == 'comet-gpu':
