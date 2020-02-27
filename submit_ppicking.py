@@ -45,11 +45,11 @@ def setupParserOptions():
     ## Cluster submission needed
     ap.add_argument('--template', default='comet_submit_template.sh',
                     help="Name of the submission template. Currently only supports comet_submit_template.sh")
-    ap.add_argument('--cluster', default='comet',
-                    help='The computer cluster the job will run on. Currently only supports comet.')
+    ap.add_argument('--cluster', default='comet-gpu',
+                    help='The computer cluster the job will run on. Currently only supports comet-gpu.')
     ap.add_argument('--jobname', default='ppicking', help='Jobname on the submission script.')
     ap.add_argument('--user_email', help='User email address to send the notification to.')
-    ap.add_argument('--walltime', default='05:00:00', help='Expected max run time of the job.')
+    ap.add_argument('--walltime', default='12:00:00', help='Expected max run time of the job.')
     args = vars(ap.parse_args())
     return args
 
@@ -144,7 +144,9 @@ def submit(**args):
                         jobname, user_email, walltime, \
                         job_config_file, program, \
                         input, output, stdout, stderr, \
-                        module, conda_env, command, parameters)
+                        module, conda_env, command, parameters \
+                        template_file=args['template'],\
+                        cluster='comet-gpu')
     os.chdir(wkdir)
     cmd='sbatch ' + submit_name
     job_id = subprocess.check_output(cmd, shell=True)

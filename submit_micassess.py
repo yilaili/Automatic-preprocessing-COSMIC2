@@ -33,8 +33,8 @@ def setupParserOptions():
     ## Cluster submission needed
     ap.add_argument('--template', default='comet_submit_template.sh',
                     help="Name of the submission template. Currently only supports comet_submit_template.sh")
-    ap.add_argument('--cluster', default='comet',
-                    help='The computer cluster the job will run on. Currently only supports comet.')
+    ap.add_argument('--cluster', default='comet-gpu',
+                    help='The computer cluster the job will run on. Currently only supports comet-gpu.')
     ap.add_argument('--jobname', default='MicAssess',
                     help='Jobname on the submission script.')
     ap.add_argument('--user_email',
@@ -89,7 +89,9 @@ def submit(**args):
                         jobname, user_email, walltime, \
                         job_config_file, program, \
                         input, output, stdout, stderr, \
-                        module, conda_env, command, parameters)
+                        module, conda_env, command, parameters \
+                        template_file=args['template'],\
+                        cluster='comet-gpu')
 
     cmd='sbatch ' + submit_name
     job_id = subprocess.check_output(cmd, shell=True)

@@ -36,17 +36,18 @@ def setupParserOptions():
     ## Cluster submission needed
     ap.add_argument('--template', default='comet_submit_template.sh',
                     help="Name of the submission template. Currently only supports comet_submit_template.sh")
-    ap.add_argument('--cluster', default='comet',
-                    help='The computer cluster the job will run on. Currently only supports comet.')
+    ap.add_argument('--cluster', default='comet-cpu',
+                    help='The computer cluster the job will run on. Currently only supports comet-cpu.')
     ap.add_argument('--jobname', default='2DClassification', help='Jobname on the submission script.')
     ap.add_argument('--user_email', help='User email address to send the notification to.')
     ap.add_argument('--walltime', default='48:00:00', help='Expected max run time of the job.')
+    ap.add_argument('--nodes', default='10',help='Number of nodes used in the computer cluster.')
 
     args = vars(ap.parse_args())
     return args
 
-def editparameters(s, diameter, k):
-    new_s = s.replace('$$diameter', diameter).replace('$$K', k)
+def editparameters(s, diameter, k, np):
+    new_s = s.replace('$$diameter', diameter).replace('$$K', k).replace('$$np', np)
     return new_s
 
 def check_good(class_dir):
@@ -81,6 +82,8 @@ def submit(**args):
     user_email = args['user_email']
     walltime = args['walltime']
     program = args['program']
+    nodes = args['nodes']
+    np = str(4*int(nodes))
     specs = 'diam%sk%s'%(args['diameter'], args['numclass'])
     submit_name = 'submit_%s_%s.sh' %(args['program'], specs)
     input = '--i %s '%args['input']
@@ -88,18 +91,19 @@ def submit(**args):
     output = '--o %s/run '%output_dir
     stdout = os.path.join('> %s'%output_dir, 'run_%s.out '%args['program'])
     stderr = os.path.join('2> %s'%output_dir, 'run_%s.err '%args['program'])
-    module = 'module load relion/3.0.8_gpu_k80'
+    module = 'module load relion/3.0.8_cpu'
     conda_env = ''
-    command = 'mpirun -np 5 relion_refine_mpi '
+    command = 'mpirun -np %s relion_refine_mpi '%np
     parameters = editparameters(job_config[program]['parameters'], \
-                                args['diameter'], args['numclass'])
+                                args['diameter'], args['numclass'], np)
 
     write_submit_comet(codedir, wkdir, submit_name, \
                         jobname, user_email, walltime, \
                         job_config_file, program, \
                         input, output, stdout, stderr, \
-                        module, conda_env, command, parameters,\
-                        nt_per_node='4', cpus_per_task='6')
+                        module, conda_env, command, parameters, \
+                        template_file=args['template'],\
+                        cluster='comet-cpu')
 
     os.chdir(wkdir)
     try:

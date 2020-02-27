@@ -37,11 +37,12 @@ def setupParserOptions():
     ## Cluster submission needed
     ap.add_argument('--template', default='comet_submit_template.sh',
                     help="Name of the submission template. Currently only supports comet_submit_template.sh")
-    ap.add_argument('--cluster', default='comet',
-                    help='The computer cluster the job will run on. Currently only supports comet.')
+    ap.add_argument('--cluster', default='comet-cpu',
+                    help='The computer cluster the job will run on. Currently only supports comet-cpu.')
     ap.add_argument('--jobname', default='Extraction', help='Jobname on the submission script.')
     ap.add_argument('--user_email', help='User email address to send the notification to.')
     ap.add_argument('--walltime', default='05:00:00', help='Expected max run time of the job.')
+    ap.add_argument('--nodes', default='5', help='Number of nodes used in the computer cluster.')
     args = vars(ap.parse_args())
     return args
 
@@ -88,6 +89,8 @@ def submit(**args):
     user_email = args['user_email']
     walltime = args['walltime']
     program = args['program']
+    nodes = args['nodes']
+    np = str(4*int(nodes))
     input = '--i %s ' %args['input']
     output = ''
     args['part_star'] = os.path.join(args['part_dir'], args['part_star']) # particle star file should be inside the particle dir folder
@@ -95,7 +98,7 @@ def submit(**args):
     stderr = os.path.join('2> %s'%args['part_dir'], 'run_%s.err '%args['program'])
     module = 'module load relion/3.0.8_gpu_k80'
     conda_env = ''
-    command = 'mpirun -np 24 relion_preprocess_mpi '
+    command = 'mpirun -np %s relion_preprocess_mpi '%np
 
     scale_factor = float(args['scaled_apix'])/float(args['apix'])
     scale = int(int(args['extract_size']) / scale_factor * 0.5) * 2
@@ -112,7 +115,9 @@ def submit(**args):
                         jobname, user_email, walltime, \
                         job_config_file, program, \
                         input, output, stdout, stderr, \
-                        module, conda_env, command, parameters)
+                        module, conda_env, command, parameters \
+                        template_file=args['template'],\
+                        cluster='comet-cpu')
 
     os.chdir(wkdir)
     cmd='sbatch ' + submit_name

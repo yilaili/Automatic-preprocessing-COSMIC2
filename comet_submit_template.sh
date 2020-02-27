@@ -13,7 +13,7 @@
 #SBATCH -A $$allocation_name # Allocation name to charge job against
 #SBATCH --nodes=$$nodes # Total number of nodes requested (16 cores/node)
 #SBATCH --ntasks-per-node=$$nt_per_node       # Total number of mpi tasks requested
-#SBATCH --gres=$$gpu_config
+$$gpu_config
 #SBATCH --cpus-per-task=$$cpus_per_task
 #SBATCH --no-requeue
 export MODULEPATH=/share/apps/compute/modulefiles/applications:$MODULEPATH

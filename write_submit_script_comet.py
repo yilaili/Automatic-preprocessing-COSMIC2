@@ -9,13 +9,38 @@ Write the submission script for Comet, given:
 import json
 import os
 
-def editclusterconfig(jobname, user_email, walltime, \
-    cluster_config_file='cluster_config.json', cluster='comet', \
-    allocation_name='csd547', partition='gpu', nodes='1', nt_per_node='6', \
-    gpu_config='gpu:k80:4', cpus_per_task='2', query_cmd='squeue ', keyarg='job_state = '):
+def editclusterconfig_gpu(jobname, user_email, walltime, \
+    cluster_config_file='cluster_config.json', cluster='comet-gpu', \
+    allocation_name='csd547', partition='gpu-shared', nodes='1', nt_per_node='6', \
+    gpu_config='#SBATCH --gres=gpu:k80:1', cpus_per_task='2', query_cmd='squeue ', keyarg='job_state = '):
 
     '''
-    Edit the cluster config json file. Default is using a 4 gpu machine (k80) on comet,
+    Edit the cluster config json file. Default is using a shared gpu machine (1 x k80) on comet,
+    with allocation for the cosmic2 project.
+    '''
+
+    with open(cluster_config_file, 'r') as f:
+        cluster_config = json.load(f)
+    cluster_config[cluster]['job_name'] = jobname
+    cluster_config[cluster]['user_email'] = user_email
+    cluster_config[cluster]['walltime'] = walltime
+    cluster_config[cluster]['allocation_name'] = allocation_name
+    cluster_config[cluster]['partition'] = partition
+    cluster_config[cluster]['nodes'] = nodes
+    cluster_config[cluster]['nt_per_node'] = nt_per_node
+    cluster_config[cluster]['gpu_config'] = gpu_config
+    cluster_config[cluster]['cpus_per_task'] = cpus_per_task
+    cluster_config[cluster]['query_cmd'] = query_cmd
+    cluster_config[cluster]['keyarg'] = keyarg
+    return cluster_config
+
+def editclusterconfig_cpu(jobname, user_email, walltime, \
+    cluster_config_file='cluster_config.json', cluster='comet-cpu', \
+    allocation_name='csd547', partition='compute', nodes='1', nt_per_node='4', \
+    cpus_per_task='6', query_cmd='squeue ', keyarg='job_state = '):
+
+    '''
+    Edit the cluster config json file. Default is using the compute cluster on comet,
     with allocation for the cosmic2 project.
     '''
 
@@ -62,36 +87,17 @@ def write_submit_comet(codedir, wkdir, submit_name, \
                         job_config_file,
                         program, \
                         input, output, stdout, stderr, \
-                        module, \
-                        conda_env, \
-                        command, \
-                        parameters, \
-                        extra='', \
-                        tail='', \
-                        template_file='comet_submit_template.sh', \
+                        module, conda_env, command, parameters, \
+                        extra='', tail='', \
+                        template_file, \
                         cluster_config_file='cluster_config.json', \
-                        cluster='comet', \
-                        allocation_name='csd547', \
-                        partition='gpu', \
-                        nodes='1', \
-                        nt_per_node='6', \
-                        gpu_config='gpu:k80:4', \
-                        cpus_per_task='2', \
-                        query_cmd='squeue ', \
-                        keyarg='job_state = '):
+                        cluster):
     # wkdir is the directory where the submission file is written into
     # codedir is the directory where all the template files are
-    cluster_config = editclusterconfig(jobname, user_email, walltime, \
-                                        cluster_config_file=cluster_config_file, \
-                                        cluster=cluster, \
-                                        allocation_name=allocation_name, \
-                                        partition=partition, \
-                                        nodes=nodes, \
-                                        nt_per_node=nt_per_node, \
-                                        gpu_config=gpu_config, \
-                                        cpus_per_task=cpus_per_task, \
-                                        query_cmd=query_cmd, \
-                                        keyarg=keyarg)
+    if cluster='comet-gpu':
+        cluster_config = editclusterconfig_gpu(jobname, user_email, walltime)
+    elif cluster='comet-cpu':
+        cluster_config = editclusterconfig_cpu(jobname, user_email, walltime)
 
     job_config = editjobconfig(job_config_file, \
                                 program, \

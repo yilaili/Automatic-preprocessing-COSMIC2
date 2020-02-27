@@ -6,9 +6,9 @@
     "runerr": "2> extract/run_extract.err "
   },
   "relion_extract": {
-    "module": "module load gnu/7.2.0 intel/2018.1.163 intelmpi/2018.1.163 relion/3.0.8_gpu_k80",
+    "module": "module load relion/3.0.8_cpu",
     "extra": "",
-    "command": "mpirun -np 24 relion_preprocess_mpi ",
+    "command": "mpirun -np $$np relion_preprocess_mpi ",
     "parameters": "--coord_suffix $$coord_suffix --coord_dir $$coord_dir --part_dir $$part_dir --part_star $$part_star --extract --extract_size $$extract_size --norm --bg_radius $$bg_radius --white_dust 5 --black_dust 5 --invert_contrast --scale $$scale  ",
     "tail": ""
   }

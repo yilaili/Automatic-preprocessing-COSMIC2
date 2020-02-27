@@ -6,10 +6,10 @@
     "runerr": "2> 2DClass/run_2DClass.err "
   },
   "relion_2DClass": {
-    "module": "module load gnu/7.2.0 intel/2018.1.163 intelmpi/2018.1.163 relion/3.0.8_gpu_k80",
+    "module": "module load relion/3.0.8_cpu",
     "extra": "",
-    "command": "mpirun -np 5 relion_refine_mpi ",
-    "parameters": "--dont_combine_weights_via_disc --pool 100 --pad 2 --ctf --iter 25 --tau2_fudge 2 --particle_diameter $$diameter --fast_subsets --K $$K --flatten_solvent --zero_mask --oversampling 1 --psi_step 12 --offset_range 5 --offset_step 2 --norm --scale --j 5 --gpu 0,1,2,3 ",
+    "command": "mpirun -np $$np relion_refine_mpi ",
+    "parameters": "--dont_combine_weights_via_disc --pool 100 --pad 2 --ctf --iter 25 --tau2_fudge 2 --particle_diameter $$diameter --fast_subsets --K $$K --flatten_solvent --zero_mask --oversampling 1 --psi_step 12 --offset_range 5 --offset_step 2 --norm --scale --j $$np ",
     "tail": "< /dev/null"
   }
 }
