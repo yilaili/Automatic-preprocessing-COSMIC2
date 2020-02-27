@@ -34,9 +34,9 @@ def editclusterconfig_gpu(jobname, user_email, walltime, \
     cluster_config[cluster]['keyarg'] = keyarg
     return cluster_config
 
-def editclusterconfig_cpu(jobname, user_email, walltime, \
+def editclusterconfig_cpu(jobname, user_email, walltime, nodes, \
     cluster_config_file='cluster_config.json', cluster='comet-cpu', \
-    allocation_name='csd547', partition='compute', nodes='1', nt_per_node='4', \
+    allocation_name='csd547', partition='compute', nt_per_node='4', \
     gpu_config='', cpus_per_task='6', query_cmd='squeue ', keyarg='job_state = '):
 
     '''
@@ -83,7 +83,7 @@ def editjobconfig(job_config_file, program, input, output, stdout, stderr, \
     return job_config
 
 def write_submit_comet(codedir, wkdir, submit_name, \
-                        jobname, user_email, walltime, \
+                        jobname, user_email, walltime, nodes, \
                         job_config_file,
                         program, \
                         input, output, stdout, stderr, \
@@ -94,9 +94,9 @@ def write_submit_comet(codedir, wkdir, submit_name, \
     # wkdir is the directory where the submission file is written into
     # codedir is the directory where all the template files are
     if cluster == 'comet-gpu':
-        cluster_config = editclusterconfig_gpu(jobname, user_email, walltime)
+        cluster_config = editclusterconfig_gpu(jobname, user_email, walltime, nodes='1')
     elif cluster == 'comet-cpu':
-        cluster_config = editclusterconfig_cpu(jobname, user_email, walltime)
+        cluster_config = editclusterconfig_cpu(jobname, user_email, walltime, nodes)
 
     job_config = editjobconfig(job_config_file, \
                                 program, \

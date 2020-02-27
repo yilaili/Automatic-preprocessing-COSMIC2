@@ -92,14 +92,14 @@ def submit(**args):
     output = '--o %s ' %args['output']
     stdout = os.path.join('> %s'%args['output'], 'run_%s.out '%args['program'])
     stderr = os.path.join('2> %s'%args['output'], 'run_%s.err '%args['program'])
-    module = 'module load relion/3.0.8_gpu_k80'
+    module = 'module load relion/3.0.8_cpu'
     conda_env = ''
     command = 'mpirun -np %s relion_run_ctffind_mpi '%np
     parameters = editparameters(job_config[program]['parameters'], \
                                 args['CS'], args['HT'], args['XMAG'], args['DStep'])
 
     write_submit_comet(codedir, wkdir, submit_name, \
-                        jobname, user_email, walltime, \
+                        jobname, user_email, walltime, nodes, \
                         job_config_file, program, \
                         input, output, stdout, stderr, \
                         module, conda_env, command, parameters, \

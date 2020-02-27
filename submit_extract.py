@@ -96,7 +96,7 @@ def submit(**args):
     args['part_star'] = os.path.join(args['part_dir'], args['part_star']) # particle star file should be inside the particle dir folder
     stdout = os.path.join('> %s'%args['part_dir'], 'run_%s.out '%args['program'])
     stderr = os.path.join('2> %s'%args['part_dir'], 'run_%s.err '%args['program'])
-    module = 'module load relion/3.0.8_gpu_k80'
+    module = 'module load relion/3.0.8_cpu'
     conda_env = ''
     command = 'mpirun -np %s relion_preprocess_mpi '%np
 
