@@ -12,7 +12,7 @@ import os
 def editclusterconfig_gpu(jobname, user_email, walltime, \
     cluster_config_file='cluster_config.json', cluster='comet-gpu', \
     allocation_name='csd547', partition='gpu-shared', nodes='1', nt_per_node='6', \
-    gpu_config='#SBATCH --gres=gpu:k80:1', cpus_per_task='2', query_cmd='squeue ', keyarg='job_state = '):
+    gpu_config='#SBATCH --gres=gpu:k80:1', cpus_per_task='1', query_cmd='squeue ', keyarg='job_state = '):
 
     '''
     Edit the cluster config json file. Default is using a shared gpu machine (1 x k80) on comet,
