@@ -37,7 +37,7 @@ def editclusterconfig_gpu(jobname, user_email, walltime, \
 def editclusterconfig_cpu(jobname, user_email, walltime, \
     cluster_config_file='cluster_config.json', cluster='comet-cpu', \
     allocation_name='csd547', partition='compute', nodes='1', nt_per_node='4', \
-    cpus_per_task='6', query_cmd='squeue ', keyarg='job_state = '):
+    gpu_config='', cpus_per_task='6', query_cmd='squeue ', keyarg='job_state = '):
 
     '''
     Edit the cluster config json file. Default is using the compute cluster on comet,
