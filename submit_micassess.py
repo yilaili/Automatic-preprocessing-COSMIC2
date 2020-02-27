@@ -89,8 +89,8 @@ def submit(**args):
                         jobname, user_email, walltime, \
                         job_config_file, program, \
                         input, output, stdout, stderr, \
-                        module, conda_env, command, parameters \
-                        template_file=args['template'],\
+                        module, conda_env, command, parameters, \
+                        template_file=args['template'], \
                         cluster='comet-gpu')
 
     cmd='sbatch ' + submit_name
