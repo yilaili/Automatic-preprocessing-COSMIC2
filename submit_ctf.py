@@ -38,7 +38,7 @@ def setupParserOptions():
                     help='The computer cluster the job will run on. Currently only supports comet-cpu.')
     ap.add_argument('--jobname', default='CTF', help='Jobname on the submission script.')
     ap.add_argument('--user_email', help='User email address to send the notification to.')
-    ap.add_argument('--walltime', default='12:00:00', help='Expected max run time of the job.')
+    ap.add_argument('--walltime', default='05:00:00', help='Expected max run time of the job.')
     ap.add_argument('--nodes', default='5', help='Number of nodes used in the computer cluster.')
     args = vars(ap.parse_args())
     return args
