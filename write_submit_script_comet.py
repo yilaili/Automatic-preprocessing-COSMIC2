@@ -94,9 +94,9 @@ def write_submit_comet(codedir, wkdir, submit_name, \
                         cluster):
     # wkdir is the directory where the submission file is written into
     # codedir is the directory where all the template files are
-    if cluster='comet-gpu':
+    if cluster == 'comet-gpu':
         cluster_config = editclusterconfig_gpu(jobname, user_email, walltime)
-    elif cluster='comet-cpu':
+    elif cluster == 'comet-cpu':
         cluster_config = editclusterconfig_cpu(jobname, user_email, walltime)
 
     job_config = editjobconfig(job_config_file, \
