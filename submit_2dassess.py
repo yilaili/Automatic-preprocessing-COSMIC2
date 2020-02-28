@@ -94,6 +94,7 @@ def submit(**args):
     user_email = args['user_email']
     walltime = args['walltime']
     program = args['program']
+    nodes = '1'
     args['starfile'] = os.path.join(args['input'], dir_list[0], args['starfile'])
     args['input'] = os.path.join(args['input'], dir_list[0], args['mrcs_name'])
     args['output'] = os.path.join(args['output'], dir_list[0])
@@ -108,7 +109,7 @@ def submit(**args):
                                 dir_list[0], args['starfile'], args['outfile'])
 
     write_submit_comet(codedir, wkdir, submit_name, \
-                        jobname, user_email, walltime, \
+                        jobname, user_email, walltime, nodes, \
                         job_config_file, program, \
                         input, output, stdout, stderr, \
                         module, conda_env, command, parameters, \

@@ -121,6 +121,7 @@ def submit(**args):
     user_email = args['user_email']
     walltime = args['walltime']
     program = args['program']
+    nodes = '1'
     input = '-i %s ' %args['input']
     output = '-o %s ' %args['output']
     stdout = os.path.join('> %s'%args['output'], 'run_%s.out '%args['program'])
@@ -141,7 +142,7 @@ def submit(**args):
                 edited_config, args['model'], args['thresh'], args['distance'])
     os.chdir(codedir)
     write_submit_comet(codedir, wkdir, submit_name, \
-                        jobname, user_email, walltime, \
+                        jobname, user_email, walltime, nodes, \
                         job_config_file, program, \
                         input, output, stdout, stderr, \
                         module, conda_env, command, parameters, \

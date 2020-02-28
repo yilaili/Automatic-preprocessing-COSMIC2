@@ -98,7 +98,7 @@ def submit(**args):
                                 args['diameter'], args['numclass'], np)
 
     write_submit_comet(codedir, wkdir, submit_name, \
-                        jobname, user_email, walltime, \
+                        jobname, user_email, walltime, nodes, \
                         job_config_file, program, \
                         input, output, stdout, stderr, \
                         module, conda_env, command, parameters, \

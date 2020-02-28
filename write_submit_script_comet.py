@@ -84,8 +84,7 @@ def editjobconfig(job_config_file, program, input, output, stdout, stderr, \
 
 def write_submit_comet(codedir, wkdir, submit_name, \
                         jobname, user_email, walltime, nodes, \
-                        job_config_file,
-                        program, \
+                        job_config_file, program, \
                         input, output, stdout, stderr, \
                         module, conda_env, command, parameters, \
                         template_file, \
