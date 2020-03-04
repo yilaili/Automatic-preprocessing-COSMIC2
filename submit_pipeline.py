@@ -43,7 +43,7 @@ def submit(**args):
                 .replace('$$final_apix', args['final_apix'])
                 new_f.write(new_line)
     # Below: copy the submission script
-    shutil.copyfile(os.path.join(code_dir, 'submit_pipeline.sh'), wkdir)
+    shutil.copyfile(os.path.join(code_dir, 'submit_pipeline.sh'), os.path.join(wkdir, 'submit_pipeline.sh'))
     # Submit the job and print the job ID (this is the job ID for the whole pipeline.)
     cmd='sbatch submit_pipeline.sh'
     job_id = subprocess.check_output(cmd, shell=True)
