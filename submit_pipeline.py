@@ -28,7 +28,7 @@ def setupParserOptions():
     return args
 
 def submit(**args):
-    codedir = os.path.abspath(os.path.join(os.path.realpath(sys.argv[0]), os.pardir))
+    code_dir = os.path.abspath(os.path.join(os.path.realpath(sys.argv[0]), os.pardir))
     wkdir = os.getcwd()
     # Below: write the pipeline.sh file in the working directory
     with open(os.path.join(code_dir, 'pipeline.sh'), 'r') as f:
