@@ -16,16 +16,12 @@ Submit the whole pipeline. This is a python wrapper to submit pipeline.sh to the
 
 def setupParserOptions():
     ap = argparse.ArgumentParser()
-    ## General inputs
-    ap.add_argument('-i', '--input', default='pipeline.sh', help="Provide the path of shell script of the whole pipeline.")
-    ## Program specific parameters
     ap.add_argument('--input_dir', default='micrographs', help="Path to the directory with all the micrographs.")
     ap.add_argument('--input_star', default='microgarphs.star', help="Name of the micrographs star file. Default is micrographs.star.")
     ap.add_argument('--CS', help='Spherical aberration of the microscope.')
     ap.add_argument('--HT', help='Kev')
     ap.add_argument('--apix', help='The original pixel size in Angstrom (before any scaling).')
     ap.add_argument('--final_apix', default='1.5', help="Final reextracted pixel size in Angstrom. Default is 1.5 Angstrom.")
-    ap.add_argument('--extract_size', help="Size of the box for particle extraction (in pixels). Usually is 2*particle_diameter.")
     ## Cluster submission needed
     ap.add_argument('--user_email', help='User email address to send the notification to.')
     args = vars(ap.parse_args())
@@ -35,8 +31,8 @@ def submit(**args):
     codedir = os.path.abspath(os.path.join(os.path.realpath(sys.argv[0]), os.pardir))
     wkdir = os.getcwd()
     # Below: write the pipeline.sh file in the working directory
-    with open(os.path.join(code_dir, args['input']), 'r') as f:
-        with open(os.path.join(wkdir, args['input']), 'w') as new_f:
+    with open(os.path.join(code_dir, 'pipeline.sh'), 'r') as f:
+        with open(os.path.join(wkdir, 'pipeline.sh'), 'w') as new_f:
             for line in f:
                 new_line = line.replace('$$input_dir', args['input_dir'])\
                 .replace('$$input_star', args['input_star'])\
