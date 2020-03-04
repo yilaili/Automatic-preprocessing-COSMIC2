@@ -23,13 +23,14 @@ def setupParserOptions():
     ap.add_argument('-i', '--input',
                     help="Provide the path of the star file of the ctf corrected micrographs.")
     ap.add_argument('-p', '--program', default='relion_extract',
-                    help='The program to use to do particle extraction. Currently only supports relion_extract.')
+                    help='The program to use to do particle extraction. Currently only supports relion_extract and relion_reextract.')
     ## Program specific parameters
     ap.add_argument('--coord_dir',
                     help="Provide the path of the PARENT DIRECORY of the directory that has coordinate files.")
     ap.add_argument('--coord_suffix', default='.star', help="Extension name of the coordinate file.")
     ap.add_argument('--part_dir', help="Name of the directory where the extracted particles are stored.")
     ap.add_argument('--part_star', help="Name of the star file of the extracted particles.")
+    ap.add_argument('--reextract_data_star', default = None, help="Only used in relion_reextract. Path to the star file of the particles starfile that you want to reextract.")
     ap.add_argument('--apix', help='The original pixel size in Angstrom (before any scaling).')
     ap.add_argument('--scaled_apix', default='3',
                     help="The desired pixel size in Angstrom after scaling. Default is 3 Angstrom.")
@@ -46,11 +47,22 @@ def setupParserOptions():
     args = vars(ap.parse_args())
     return args
 
-def editparameters(s, coord_suffix, coord_dir, part_dir, part_star, extract_size, bg_radius, scale):
+def editparameters_extract(s, coord_suffix, coord_dir, part_dir, part_star, extract_size, bg_radius, scale):
     new_s = s.replace('$$coord_suffix', coord_suffix)\
     .replace('$$coord_dir', coord_dir)\
     .replace('$$part_dir', part_dir)\
     .replace('$$part_star', part_star)\
+    .replace('$$extract_size', extract_size)\
+    .replace('$$bg_radius', bg_radius)\
+    .replace('$$scale', scale)
+    return new_s
+
+def editparameters_reextract(s, coord_suffix, coord_dir, part_dir, part_star, reextract_data_star, extract_size, bg_radius, scale):
+    new_s = s.replace('$$coord_suffix', coord_suffix)\
+    .replace('$$coord_dir', coord_dir)\
+    .replace('$$part_dir', part_dir)\
+    .replace('$$part_star', part_star)\
+    .replace('$$reextract_data_star', reextract_data_star)\
     .replace('$$extract_size', extract_size)\
     .replace('$$bg_radius', bg_radius)\
     .replace('$$scale', scale)
@@ -106,9 +118,15 @@ def submit(**args):
     scale = str(scale)
     bg_radius = str(bg_radius)
 
-    parameters = editparameters(job_config[program]['parameters'], \
+    if program == 'relion_extract':
+        parameters = editparameters_extract(job_config[program]['parameters'], \
                                 args['coord_suffix'], args['coord_dir'], \
                                 args['part_dir'], args['part_star'], \
+                                args['extract_size'], bg_radius, scale)
+    elif program == 'relion_reextract':
+        parameters = editparameters_reextract(job_config[program]['parameters'], \
+                                args['coord_suffix'], args['coord_dir'], \
+                                args['part_dir'], args['part_star'], args['reextract_data_star']\
                                 args['extract_size'], bg_radius, scale)
 
     write_submit_comet(codedir, wkdir, submit_name, \
