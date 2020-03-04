@@ -1,6 +1,6 @@
-input_dir=$$input_dir
-input_star=$$input_star
-user_email=$$user_email
+input_dir='$$input_dir'
+input_star='$$input_star'
+user_email='$$user_email'
 CS=$$CS
 HT=$$HT
 apix=$$apix
