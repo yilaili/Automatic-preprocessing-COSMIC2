@@ -41,7 +41,7 @@ def submit(**args):
                 .replace('$$HT', args['HT'])\
                 .replace('$$apix', args['apix'])\
                 .replace('$$final_apix', args['final_apix'])
-                new_f.write(newline)
+                new_f.write(new_line)
     # Below: copy the submission script
     shutil.copyfile(os.path.join(code_dir, 'submit_pipeline.sh'), wkdir)
     # Submit the job and print the job ID (this is the job ID for the whole pipeline.)
