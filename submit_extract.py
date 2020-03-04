@@ -126,7 +126,7 @@ def submit(**args):
     elif program == 'relion_reextract':
         parameters = editparameters_reextract(job_config[program]['parameters'], \
                                 args['coord_suffix'], args['coord_dir'], \
-                                args['part_dir'], args['part_star'], args['reextract_data_star']\
+                                args['part_dir'], args['part_star'], args['reextract_data_star'], \
                                 args['extract_size'], bg_radius, scale)
 
     write_submit_comet(codedir, wkdir, submit_name, \
