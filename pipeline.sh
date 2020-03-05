@@ -28,12 +28,12 @@ python /home/yilaili/codes/Automatic-preprocessing-COSMIC2/submit_extract.py -i 
 diam1=$(echo "$size*0.5" | bc)
 diam1=${diam1%.*}
 diam2=$(echo "$size*0.8" | bc)
-diam2=${diam1%.*}
+diam2=${diam2%.*}
 diam3=$size
 diam4=$(echo "$size*1.2" | bc)
-diam4=${diam3%.*}
+diam4=${diam4%.*}
 diam5=$(echo "$size*1.5" | bc)
-diam5=${diam4%.*}
+diam5=${diam5%.*}
 
 python /home/yilaili/codes/Automatic-preprocessing-COSMIC2/submit_2DClass.py -i extract/particles.star -d $diam1 --user_email $user_email --nodes 5 &
 python /home/yilaili/codes/Automatic-preprocessing-COSMIC2/submit_2DClass.py -i extract/particles.star -d $diam2 --user_email $user_email --nodes 5 &
