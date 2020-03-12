@@ -125,7 +125,7 @@ def write_submit_comet(codedir, wkdir, submit_name, \
     with open(os.path.join(codedir, template_file), 'r') as f:
         with open(submit_name, 'w') as new_f:
             for line in f:
-                newline = line.replace('$$job_name', cluster_config[cluster]['job_name'])\
+                newline = line.decode('utf-8').replace('$$job_name', cluster_config[cluster]['job_name'])\
                 .replace('$$walltime', cluster_config[cluster]['walltime'])\
                 .replace('$$user_email', cluster_config[cluster]['user_email'])\
                 .replace('$$partition', cluster_config[cluster]['partition'])\
