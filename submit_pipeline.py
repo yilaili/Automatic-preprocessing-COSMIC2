@@ -17,7 +17,7 @@ Submit the whole pipeline. This is a python wrapper to submit pipeline.sh to the
 def setupParserOptions():
     ap = argparse.ArgumentParser()
     ap.add_argument('--input_dir', default='micrographs', help="Path to the directory with all the micrographs.")
-    ap.add_argument('--input_star', default='microgarphs.star', help="Name of the micrographs star file. Default is micrographs.star.")
+    ap.add_argument('--input_star', default='micrographs.star', help="Name of the micrographs star file. Default is micrographs.star.")
     ap.add_argument('--CS', help='Spherical aberration of the microscope.')
     ap.add_argument('--HT', help='Kev')
     ap.add_argument('--apix', help='The original pixel size in Angstrom (before any scaling).')
