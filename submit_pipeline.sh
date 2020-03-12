@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH -o stdout.txt  # Name of stdout output file(%%j expands to jobId)
 #SBATCH -e stderr.txt  # Name of stderr output file(%%j expands to jobId)
-#SBATCH --partition=compute     # submit to the ‘large’ queue for jobs > 256 nodes
+#SBATCH --partition=shared     # submit to the ‘large’ queue for jobs > 256 nodes
 #SBATCH -J Pipeline    # Job name
 #SBATCH -t 48:00:00     # Run time (hh:mm:ss)
 #SBATCH --mail-user=yilai@umich.edu
