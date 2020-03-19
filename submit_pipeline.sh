@@ -18,5 +18,18 @@
 export MODULEPATH=/share/apps/compute/modulefiles/applications:$MODULEPATH
 export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
 module purge
+module load anaconda/4.7.12
+__conda_setup="$('/share/apps/compute/anaconda/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/share/apps/compute/anaconda/etc/profile.d/conda.sh" ]; then
+        . "/share/apps/compute/anaconda/etc/profile.d/conda.sh"
+    else
+        export PATH="/share/apps/compute/anaconda/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+conda activate pipeline
 
 bash pipeline.sh > run_pipeline.out 2> run_pipline.err
