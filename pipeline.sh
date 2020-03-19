@@ -7,7 +7,7 @@ apix=$$apix
 final_apix=$$final_apix
 start_boxsize=150
 
-printf 'data_\nloop_\n_rlnMicrographName\n' >> $input_star | ls $input_dir/*.mrc >> $input_star
+### printf 'data_\nloop_\n_rlnMicrographName\n' >> $input_star | ls $input_dir/*.mrc >> $input_star
 
 python /home/yilaili/codes/Automatic-preprocessing-COSMIC2/submit_micassess.py -i $input_star --user_email $user_email
 python /home/yilaili/codes/Automatic-preprocessing-COSMIC2/submit_ctf.py -i micrographs_micassess.star -o ctf --CS $CS --HT $HT --DStep $apix --user_email $user_email --nodes 2
