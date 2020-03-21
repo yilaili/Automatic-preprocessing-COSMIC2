@@ -7,6 +7,20 @@ apix=$$apix
 final_apix=$$final_apix
 start_boxsize=150
 
+module load anaconda/4.7.12
+__conda_setup="$('/share/apps/compute/anaconda/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/share/apps/compute/anaconda/etc/profile.d/conda.sh" ]; then
+        . "/share/apps/compute/anaconda/etc/profile.d/conda.sh"
+    else
+        export PATH="/share/apps/compute/anaconda/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+conda activate pipeline
+
 ### printf 'data_\nloop_\n_rlnMicrographName\n' >> $input_star | ls $input_dir/*.mrc >> $input_star
 
 python /home/yilaili/codes/Automatic-preprocessing-COSMIC2/submit_micassess.py -i $input_star --user_email $user_email
