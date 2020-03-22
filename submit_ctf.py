@@ -94,7 +94,7 @@ def submit(**args):
     stderr = os.path.join('2> %s'%args['output'], 'run_%s.err '%args['program'])
     module = 'module load relion/3.0-beta-cluster'
     conda_env = 'source activate pipeline'
-    command = 'mpirun $NSLOTS `which relion_run_ctffind_mpi` '
+    command = 'mpirun -np $NSLOTS `which relion_run_ctffind_mpi` '
     parameters = editparameters(job_config[program]['parameters'], \
                                 args['CS'], args['HT'], args['XMAG'], args['DStep'])
 
