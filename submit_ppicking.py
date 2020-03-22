@@ -79,7 +79,7 @@ def check_good(runout, wkdir):
     of the run_ppicker.out file.
     '''
     os.chdir(wkdir)
-    cmd = 'tail -5 '+ runout
+    cmd = 'tail -15 '+ runout
     last_line = subprocess.check_output(cmd, shell=True).decode("utf-8")
     str = 'particles in total are found'
     return last_line.find(str) != -1

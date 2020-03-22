@@ -32,4 +32,4 @@ fi
 unset __conda_setup
 conda activate pipeline
 
-bash pipeline.sh > run_pipeline.out 2> run_pipline.err
+bash pipeline.sh > run_pipeline.out 2> run_pipeline.err
