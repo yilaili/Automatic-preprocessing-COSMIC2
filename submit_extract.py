@@ -107,7 +107,7 @@ def submit(**args):
     stdout = os.path.join('> %s'%args['part_dir'], 'run_%s.out '%args['program'])
     stderr = os.path.join('2> %s'%args['part_dir'], 'run_%s.err '%args['program'])
     module = 'module load relion/3.0-beta-cluster'
-    conda_env = 'conda activate pipeline'
+    conda_env = 'source activate pipeline'
     command = 'mpirun -np $NSLOTS `which relion_preprocess_mpi` '
 
     scale_factor = float(args['scaled_apix'])/float(args['apix'])

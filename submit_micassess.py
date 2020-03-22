@@ -24,7 +24,7 @@ def setupParserOptions():
     ap.add_argument('-p', '--program', default='micassess',
                     help='The program to use to do micrograph assessment. Currently only supports micassess.')
     ## Program specific parameters
-    ap.add_argument('-m', '--model', default='/home/yilaili/codes/Automatic-preprocessing-COSMIC2/models/micassess_051419.h5',
+    ap.add_argument('-m', '--model', default='/lsi/groups/mcianfroccolab/yilai/codes/Automatic-preprocessing-COSMIC2/models/micassess_051419.h5',
                     help="Model file (.h5 file) for MicAssess.")
     ap.add_argument('-t', '--threshold', type=float, default=0.1,
                     help="Threshold for classification. Default is 0.1. Higher number will cause more good micrographs being classified as bad.")
@@ -76,7 +76,7 @@ def submit(**args):
     stdout = '> run_%s.out ' %args['program']
     stderr = '2> run_%s.err ' %args['program']
     module = ' '
-    conda_env = 'conda activate cryoassess-cpu'
+    conda_env = 'source activate cryoassess-cpu'
     command = 'python /lsi/groups/mcianfroccolab/yilai/codes/Automatic-preprocessing-COSMIC2/micassess.py '
     parameters = editparameters(job_config[program]['parameters'], args['model'], args['threshold'])
 
