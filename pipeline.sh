@@ -8,14 +8,14 @@ start_boxsize=150
 
 module purge
 module load python-anaconda3/latest
-__conda_setup="$('/share/apps/compute/anaconda/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+__conda_setup="$('/lsi/local/packages/python-anaconda3/latest/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
-    if [ -f "/share/apps/compute/anaconda/etc/profile.d/conda.sh" ]; then
-        . "/share/apps/compute/anaconda/etc/profile.d/conda.sh"
+    if [ -f "/lsi/local/packages/python-anaconda3/latest/etc/profile.d/conda.sh" ]; then
+        . "/lsi/local/packages/python-anaconda3/latest/etc/profile.d/conda.sh"
     else
-        export PATH="/share/apps/compute/anaconda/bin:$PATH"
+        export PATH="/lsi/local/packages/python-anaconda3/latest/bin:$PATH"
     fi
 fi
 unset __conda_setup
