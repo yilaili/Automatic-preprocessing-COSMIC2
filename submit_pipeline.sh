@@ -12,6 +12,6 @@
 #################################
 module purge
 module load python-anaconda3/latest
-conda activate pipeline
+source activate pipeline
 cd $PBS_O_WORKDIR
 bash pipeline.sh > run_pipeline.out 2> run_pipeline.err

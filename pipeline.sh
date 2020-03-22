@@ -6,6 +6,10 @@ apix=$$apix
 final_apix=$$final_apix
 start_boxsize=150
 
+module purge
+module load python-anaconda3/latest
+source activate pipeline
+
 printf 'data_\nloop_\n_rlnMicrographName\n' >> $input_star | ls $input_dir/*.mrc >> $input_star
 
 python /lsi/groups/mcianfroccolab/yilai/codes/Automatic-preprocessing-COSMIC2/submit_micassess.py -i $input_star

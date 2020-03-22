@@ -44,11 +44,11 @@ def submit(**args):
     # Below: copy the submission script
     shutil.copyfile(os.path.join(code_dir, 'submit_pipeline.sh'), os.path.join(wkdir, 'submit_pipeline.sh'))
     # Submit the job and print the job ID (this is the job ID for the whole pipeline.)
-    cmd='qsub submit_pipeline.sh'
-    job_id = subprocess.check_output(cmd, shell=True)
-    job_id = job_id.decode("utf-8")
-    job_id = str(int(job_id))
-    print(job_id)
+    # cmd='qsub submit_pipeline.sh'
+    # job_id = subprocess.check_output(cmd, shell=True)
+    # job_id = job_id.decode("utf-8")
+    # job_id = str(int(job_id))
+    # print(job_id)
 
 if __name__ == '__main__':
     args = setupParserOptions()
