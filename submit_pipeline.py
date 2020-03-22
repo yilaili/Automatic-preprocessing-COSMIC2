@@ -4,10 +4,10 @@ import argparse
 import os
 import sys
 import subprocess
-from check_if_done import check_state_comet
+from check_if_done import check_state_lsi
 import time
 import shutil
-from write_submit_script_comet import write_submit_comet
+from write_submit_script_lsi import write_submit_lsi
 import re
 
 '''
