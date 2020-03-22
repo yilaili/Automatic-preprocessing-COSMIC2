@@ -1,28 +1,10 @@
 {
-  "comet-gpu": {
+  "lsi": {
     "job_name": "default_jobname",
-    "user_email": " ",
     "walltime": "24:00:00",
-    "allocation_name": "csd547",
-    "partition": "gpu-shared",
+    "queue_name": "batch",
     "nodes": "1",
-    "nt_per_node": "6",
-    "gpu_config": "#SBATCH --gres=gpu:k80:1",
-    "cpus_per_task": "2",
-    "query_cmd": "squeue --noheader --long --states=completing,running,pending,configuring -j ",
-    "keyarg": "job_state = "
-  },
-  "comet-cpu": {
-    "job_name": "default_jobname",
-    "user_email": " ",
-    "walltime": "24:00:00",
-    "allocation_name": "csd547",
-    "partition": "compute",
-    "nodes": "1",
-    "nt_per_node": "4",
-    "gpu_config": "",
-    "cpus_per_task": "6",
-    "query_cmd": "squeue --noheader --long --states=completing,running,pending,configuring -j ",
+    "query_cmd": "qstat ",
     "keyarg": "job_state = "
   }
 }

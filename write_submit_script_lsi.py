@@ -9,35 +9,9 @@ Write the submission script for Comet, given:
 import json
 import os
 
-def editclusterconfig_gpu(jobname, user_email, walltime, \
-    cluster_config_file='cluster_config.json', cluster='comet-gpu', \
-    allocation_name='csd547', partition='gpu-shared', nodes='1', nt_per_node='6', \
-    gpu_config='#SBATCH --gres=gpu:k80:1', cpus_per_task='1', query_cmd='squeue ', keyarg='job_state = '):
-
-    '''
-    Edit the cluster config json file. Default is using a shared gpu machine (1 x k80) on comet,
-    with allocation for the cosmic2 project.
-    '''
-
-    with open(cluster_config_file, 'r') as f:
-        cluster_config = json.load(f)
-    cluster_config[cluster]['job_name'] = jobname
-    cluster_config[cluster]['user_email'] = user_email
-    cluster_config[cluster]['walltime'] = walltime
-    cluster_config[cluster]['allocation_name'] = allocation_name
-    cluster_config[cluster]['partition'] = partition
-    cluster_config[cluster]['nodes'] = nodes
-    cluster_config[cluster]['nt_per_node'] = nt_per_node
-    cluster_config[cluster]['gpu_config'] = gpu_config
-    cluster_config[cluster]['cpus_per_task'] = cpus_per_task
-    cluster_config[cluster]['query_cmd'] = query_cmd
-    cluster_config[cluster]['keyarg'] = keyarg
-    return cluster_config
-
-def editclusterconfig_cpu(jobname, user_email, walltime, nodes, \
-    cluster_config_file='cluster_config.json', cluster='comet-cpu', \
-    allocation_name='csd547', partition='compute', nt_per_node='4', \
-    gpu_config='', cpus_per_task='6', query_cmd='squeue ', keyarg='job_state = '):
+def editclusterconfig_cpu(jobname, walltime, nodes, \
+    cluster_config_file='cluster_config.json', cluster='lsi', \
+    queue_name='batch', query_cmd='qstat ', keyarg='job_state = '):
 
     '''
     Edit the cluster config json file. Default is using the compute cluster on comet,
@@ -47,14 +21,9 @@ def editclusterconfig_cpu(jobname, user_email, walltime, nodes, \
     with open(cluster_config_file, 'r') as f:
         cluster_config = json.load(f)
     cluster_config[cluster]['job_name'] = jobname
-    cluster_config[cluster]['user_email'] = user_email
     cluster_config[cluster]['walltime'] = walltime
-    cluster_config[cluster]['allocation_name'] = allocation_name
-    cluster_config[cluster]['partition'] = partition
+    cluster_config[cluster]['queue_name'] = queue_name
     cluster_config[cluster]['nodes'] = nodes
-    cluster_config[cluster]['nt_per_node'] = nt_per_node
-    cluster_config[cluster]['gpu_config'] = gpu_config
-    cluster_config[cluster]['cpus_per_task'] = cpus_per_task
     cluster_config[cluster]['query_cmd'] = query_cmd
     cluster_config[cluster]['keyarg'] = keyarg
     return cluster_config
@@ -82,8 +51,8 @@ def editjobconfig(job_config_file, program, input, output, stdout, stderr, \
     # job_config[program]['parameters'] = editparameter(s, model, threshold)
     return job_config
 
-def write_submit_comet(codedir, wkdir, submit_name, \
-                        jobname, user_email, walltime, nodes, \
+def write_submit_lsi(codedir, wkdir, submit_name, \
+                        jobname, walltime, nodes, \
                         job_config_file, program, \
                         input, output, stdout, stderr, \
                         module, conda_env, command, parameters, \
@@ -92,10 +61,7 @@ def write_submit_comet(codedir, wkdir, submit_name, \
                         extra='', tail=''):
     # wkdir is the directory where the submission file is written into
     # codedir is the directory where all the template files are
-    if cluster == 'comet-gpu':
-        cluster_config = editclusterconfig_gpu(jobname, user_email, walltime, nodes='1')
-    elif cluster == 'comet-cpu':
-        cluster_config = editclusterconfig_cpu(jobname, user_email, walltime, nodes)
+    cluster_config = editclusterconfig_cpu(jobname, walltime, nodes)
 
     job_config = editjobconfig(job_config_file, \
                                 program, \
@@ -128,13 +94,8 @@ def write_submit_comet(codedir, wkdir, submit_name, \
                 # newline = line.decode('utf-8').replace('$$job_name', cluster_config[cluster]['job_name'])\
                 newline = line.replace('$$job_name', cluster_config[cluster]['job_name'])\
                 .replace('$$walltime', cluster_config[cluster]['walltime'])\
-                .replace('$$user_email', cluster_config[cluster]['user_email'])\
-                .replace('$$partition', cluster_config[cluster]['partition'])\
-                .replace('$$allocation_name', cluster_config[cluster]['allocation_name'])\
+                .replace('$$queue_name', cluster_config[cluster]['queue_name'])\
                 .replace('$$nodes', cluster_config[cluster]['nodes'])\
-                .replace('$$nt_per_node', cluster_config[cluster]['nt_per_node'])\
-                .replace('$$gpu_config', cluster_config[cluster]['gpu_config'])\
-                .replace('$$cpus_per_task', cluster_config[cluster]['cpus_per_task'])\
                 .replace('$$modules', job_config[program]['module'])\
                 .replace('$$extra', job_config[program]['extra'])\
                 .replace('$$conda_env', job_config[program]['conda_env'])\

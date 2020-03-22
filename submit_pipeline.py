@@ -23,7 +23,7 @@ def setupParserOptions():
     ap.add_argument('--apix', help='The original pixel size in Angstrom (before any scaling).')
     ap.add_argument('--final_apix', default='1.5', help="Final reextracted pixel size in Angstrom. Default is 1.5 Angstrom.")
     ## Cluster submission needed
-    ap.add_argument('--user_email', help='User email address to send the notification to.')
+    # ap.add_argument('--user_email', help='User email address to send the notification to.')
     args = vars(ap.parse_args())
     return args
 
@@ -36,7 +36,7 @@ def submit(**args):
             for line in f:
                 new_line = line.replace('$$input_dir', args['input_dir'])\
                 .replace('$$input_star', args['input_star'])\
-                .replace('$$user_email', args['user_email'])\
+                # .replace('$$user_email', args['user_email'])\
                 .replace('$$CS', args['CS'])\
                 .replace('$$HT', args['HT'])\
                 .replace('$$apix', args['apix'])\
@@ -45,7 +45,7 @@ def submit(**args):
     # Below: copy the submission script
     shutil.copyfile(os.path.join(code_dir, 'submit_pipeline.sh'), os.path.join(wkdir, 'submit_pipeline.sh'))
     # Submit the job and print the job ID (this is the job ID for the whole pipeline.)
-    cmd='sbatch submit_pipeline.sh'
+    cmd='qsub submit_pipeline.sh'
     job_id = subprocess.check_output(cmd, shell=True)
     job_id = job_id.decode("utf-8")
     job_id = re.findall('job (\d+)', job_id)[0]

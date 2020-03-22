@@ -4,10 +4,10 @@ import argparse
 import os
 import sys
 import subprocess
-from check_if_done import check_state_comet
+from check_if_done import check_state_lsi
 import time
 import shutil
-from write_submit_script_comet import write_submit_comet
+from write_submit_script_lsi import write_submit_lsi
 import re
 
 '''
@@ -34,20 +34,18 @@ def setupParserOptions():
     ap.add_argument('-K', '--numclass', default='200',
                     help="Number of classes to be used in 2D classification. Default is 200 (the max allowed).")
     ## Cluster submission needed
-    ap.add_argument('--template', default='comet_submit_template.sh',
-                    help="Name of the submission template. Currently only supports comet_submit_template.sh")
-    ap.add_argument('--cluster', default='comet-cpu',
-                    help='The computer cluster the job will run on. Currently only supports comet-cpu.')
+    ap.add_argument('--template', default='lsi_submit_template.sh', help="Name of the submission template.")
+    ap.add_argument('--cluster', default='lsi', help='The computer cluster the job will run on.')
     ap.add_argument('--jobname', default='2DClassification', help='Jobname on the submission script.')
-    ap.add_argument('--user_email', help='User email address to send the notification to.')
+    # ap.add_argument('--user_email', help='User email address to send the notification to.')
     ap.add_argument('--walltime', default='48:00:00', help='Expected max run time of the job.')
     ap.add_argument('--nodes', default='10',help='Number of nodes used in the computer cluster.')
 
     args = vars(ap.parse_args())
     return args
 
-def editparameters(s, diameter, k, np):
-    new_s = s.replace('$$diameter', diameter).replace('$$K', k).replace('$$np', np)
+def editparameters(s, diameter, k):
+    new_s = s.replace('$$diameter', diameter).replace('$$K', k)
     return new_s
 
 def check_good(class_dir):
@@ -79,11 +77,11 @@ def submit(**args):
         job_config = json.load(f)
 
     jobname = args['jobname']
-    user_email = args['user_email']
+    # user_email = args['user_email']
     walltime = args['walltime']
     program = args['program']
     nodes = args['nodes']
-    np = str(4*int(nodes))
+    # np = str(4*int(nodes))
     specs = 'diam%sk%s'%(args['diameter'], args['numclass'])
     submit_name = 'submit_%s_%s.sh' %(args['program'], specs)
     input = '--i %s '%args['input']
@@ -91,19 +89,19 @@ def submit(**args):
     output = '--o %s/run '%output_dir
     stdout = os.path.join('> %s'%output_dir, 'run_%s.out '%args['program'])
     stderr = os.path.join('2> %s'%output_dir, 'run_%s.err '%args['program'])
-    module = 'module load relion/3.0.8_cpu'
+    module = 'module load relion/3.0-cluster/openmpi/3.1.2'
     conda_env = 'conda activate pipeline'
-    command = 'mpirun -np %s relion_refine_mpi '%np
+    command = 'mpirun -np $NSLOTS `which relion_refine_mpi` '
     parameters = editparameters(job_config[program]['parameters'], \
-                                args['diameter'], args['numclass'], np)
+                                args['diameter'], args['numclass'])
 
-    write_submit_comet(codedir, wkdir, submit_name, \
-                        jobname, user_email, walltime, nodes, \
+    write_submit_lsi(codedir, wkdir, submit_name, \
+                        jobname, walltime, nodes, \
                         job_config_file, program, \
                         input, output, stdout, stderr, \
                         module, conda_env, command, parameters, \
                         template_file=args['template'],\
-                        cluster='comet-cpu')
+                        cluster='lsi')
 
     os.chdir(wkdir)
     try:
@@ -112,7 +110,7 @@ def submit(**args):
     except OSError:
         os.mkdir(output_dir) # make "diamxxxkxxx" directory under the output directory
 
-    cmd='sbatch ' + submit_name
+    cmd='qsub ' + submit_name
     job_id = subprocess.check_output(cmd, shell=True)
     job_id = job_id.decode("utf-8")
     job_id = re.findall('job (\d+)', job_id)[0]
@@ -126,17 +124,17 @@ def submit(**args):
 
 def check_complete(job_id, query_cmd, keyarg):
     ## Below: check every 2 seconds if the job has finished.
-    state = check_state_comet(query_cmd, job_id, keyarg)
+    state = check_state_lsi(query_cmd, job_id, keyarg)
     start_time = time.time()
     interval = 2
     # i = 1
     # while state!='completed':
     #     time.sleep(start_time + i*interval - time.time())
-    #     state = check_state(query_cmd, job_id, keyarg)
+    #     state = check_state_lsi(query_cmd, job_id, keyarg)
     #     i = i + 1
-    while state!='completed':
+    while state!='C':
         time.sleep(interval)
-        state = check_state_comet(query_cmd, job_id, keyarg)
+        state = check_state_lsi(query_cmd, job_id, keyarg)
 
 def check_output_good(**args):
     wkdir = os.path.abspath(os.path.join(os.path.dirname(args['input']), os.pardir))

@@ -4,11 +4,11 @@ import argparse
 import os
 import sys
 import subprocess
-from check_if_done import check_state_comet
+from check_if_done import check_state_lsi
 import time
 import shutil
 from shutil import copy2
-from write_submit_script_comet import write_submit_comet
+from write_submit_script_lsi import write_submit_lsi
 import re
 
 '''
@@ -43,13 +43,11 @@ def setupParserOptions():
     ap.add_argument('--thresh', default='0.1',
                     help='Only if you use cryolo. Threshold number of cryolo.')
     ## Cluster submission needed
-    ap.add_argument('--template', default='comet_submit_template.sh',
-                    help="Name of the submission template. Currently only supports comet_submit_template.sh")
-    ap.add_argument('--cluster', default='comet-gpu',
-                    help='The computer cluster the job will run on. Currently only supports comet-gpu.')
+    ap.add_argument('--template', default='lsi_submit_template.sh', help="Name of the submission template.")
+    ap.add_argument('--cluster', default='lsi', help='The computer cluster the job will run on.')
     ap.add_argument('--jobname', default='ppicking', help='Jobname on the submission script.')
-    ap.add_argument('--user_email', help='User email address to send the notification to.')
-    ap.add_argument('--walltime', default='12:00:00', help='Expected max run time of the job.')
+    # ap.add_argument('--user_email', help='User email address to send the notification to.')
+    ap.add_argument('--walltime', default='24:00:00', help='Expected max run time of the job.')
     args = vars(ap.parse_args())
     return args
 
@@ -118,7 +116,7 @@ def submit(**args):
         job_config = json.load(f)
 
     jobname = args['jobname']
-    user_email = args['user_email']
+    # user_email = args['user_email']
     walltime = args['walltime']
     program = args['program']
     nodes = '1'
@@ -127,7 +125,7 @@ def submit(**args):
     stdout = os.path.join('> %s'%args['output'], 'run_%s.out '%args['program'])
     stderr = os.path.join('2> %s'%args['output'], 'run_%s.err '%args['program'])
     module = ' '
-    conda_env = 'conda activate cryolo-pipeline'
+    conda_env = 'conda activate cryolo-cpu'
     command = 'cryolo_predict.py '
     pixel_boxsize = str(int(int(args['boxsize']) / float(args['apix']))) # Convert boxsize from Angstrom to pixels
     suffix = program + '_d' + pixel_boxsize + 't' + args['thresh'] # suffix e.g.: cryolo_d130t0.3
@@ -141,15 +139,15 @@ def submit(**args):
     parameters = editparameters(job_config[program]['parameters'], \
                 edited_config, args['model'], args['thresh'], args['distance'])
     os.chdir(codedir)
-    write_submit_comet(codedir, wkdir, submit_name, \
-                        jobname, user_email, walltime, nodes, \
+    write_submit_lsi(codedir, wkdir, submit_name, \
+                        jobname, walltime, nodes, \
                         job_config_file, program, \
                         input, output, stdout, stderr, \
                         module, conda_env, command, parameters, \
                         template_file=args['template'],\
-                        cluster='comet-gpu')
+                        cluster='lsi')
     os.chdir(wkdir)
-    cmd='sbatch ' + submit_name
+    cmd='qsub ' + submit_name
     job_id = subprocess.check_output(cmd, shell=True)
     job_id = job_id.decode("utf-8")
     job_id = re.findall('job (\d+)', job_id)[0]
@@ -170,17 +168,17 @@ def check_complete(job_id, query_cmd, keyarg, **args):
     suffix = program + '_d' + pixel_boxsize + 't' + args['thresh'] # suffix e.g.: cryolo_d130t0.3
 
     ## Below: check every 2 seconds if the job has finished.
-    state = check_state_comet(query_cmd, job_id, keyarg)
+    state = check_state_lsi(query_cmd, job_id, keyarg)
     start_time = time.time()
     interval = 2
     # i = 1
     # while state!='completed':
     #     time.sleep(start_time + i*interval - time.time())
-    #     state = check_state_comet(query_cmd, job_id, keyarg)
+    #     state = check_state_lsi(query_cmd, job_id, keyarg)
     #     i = i + 1
-    while state!='completed':
+    while state!='C':
         time.sleep(interval)
-        state = check_state_comet(query_cmd, job_id, keyarg)
+        state = check_state_lsi(query_cmd, job_id, keyarg)
 
     ## Below: check if the particle picking output is correct.
     os.chdir(wkdir)

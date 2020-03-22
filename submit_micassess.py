@@ -4,10 +4,10 @@ import argparse
 import os
 import sys
 import subprocess
-from check_if_done import check_state_comet
+from check_if_done import check_state_lsi
 import time
 import shutil
-from write_submit_script_comet import write_submit_comet
+from write_submit_script_lsi import write_submit_lsi
 import re
 
 '''
@@ -28,21 +28,15 @@ def setupParserOptions():
                     help="Model file (.h5 file) for MicAssess.")
     ap.add_argument('-t', '--threshold', type=float, default=0.1,
                     help="Threshold for classification. Default is 0.1. Higher number will cause more good micrographs being classified as bad.")
-    ap.add_argument('-b', '--batch_size', type=int, default=32,
+    ap.add_argument('-b', '--batch_size', type=int, default=16,
                     help="Batch size used in prediction. Default is 32. If memory error/warning appears, try lower this number to 16, 8, or even lower.")
     ## Cluster submission needed
-    ap.add_argument('--template', default='comet_submit_template.sh',
-                    help="Name of the submission template. Currently only supports comet_submit_template.sh")
-    ap.add_argument('--cluster', default='comet-gpu',
-                    help='The computer cluster the job will run on. Currently only supports comet-gpu.')
-    ap.add_argument('--jobname', default='MicAssess',
-                    help='Jobname on the submission script.')
-    ap.add_argument('--user_email',
-                    help='User email address to send the notification to.')
-    ap.add_argument('--walltime', default='05:00:00',
-                    help='Expected max run time of the job.')
-    # ap.add_argument('-n', '--nodes', default='1',
-    #                 help='Number of nodes used in the computer cluster.')
+    ap.add_argument('--template', default='lsi_submit_template.sh', help="Name of the submission template.")
+    ap.add_argument('--cluster', default='lsi', help='The computer cluster the job will run on.')
+    ap.add_argument('--jobname', default='MicAssess', help='Jobname on the submission script.')
+    # ap.add_argument('--user_email', help='User email address to send the notification to.')
+    ap.add_argument('--walltime', default='05:00:00', help='Expected max run time of the job.')
+    # ap.add_argument('-n', '--nodes', default='1', help='Number of nodes used in the computer cluster.')
     args = vars(ap.parse_args())
     return args
 
@@ -73,7 +67,7 @@ def submit(**args):
         job_config = json.load(f)
 
     jobname = args['jobname']
-    user_email = args['user_email']
+    # user_email = args['user_email']
     walltime = args['walltime']
     program = args['program']
     nodes = '1'
@@ -82,19 +76,19 @@ def submit(**args):
     stdout = '> run_%s.out ' %args['program']
     stderr = '2> run_%s.err ' %args['program']
     module = ' '
-    conda_env = 'conda activate cryoassess'
-    command = 'python /home/yilaili/codes/Automatic-preprocessing-COSMIC2/micassess.py '
+    conda_env = 'conda activate cryoassess-cpu'
+    command = 'python /lsi/groups/mcianfroccolab/yilai/codes/Automatic-preprocessing-COSMIC2/micassess.py '
     parameters = editparameters(job_config[program]['parameters'], args['model'], args['threshold'])
 
-    write_submit_comet(codedir, wkdir, submit_name, \
-                        jobname, user_email, walltime, nodes, \
+    write_submit_lsi(codedir, wkdir, submit_name, \
+                        jobname, walltime, nodes, \
                         job_config_file, program, \
                         input, output, stdout, stderr, \
                         module, conda_env, command, parameters, \
                         template_file=args['template'], \
-                        cluster='comet-gpu')
+                        cluster='lsi')
 
-    cmd='sbatch ' + submit_name
+    cmd='qsub ' + submit_name
     job_id = subprocess.check_output(cmd, shell=True)
     job_id = job_id.decode("utf-8")
     job_id = re.findall('job (\d+)', job_id)[0]
@@ -107,17 +101,17 @@ def submit(**args):
 
 def check_complete(job_id, query_cmd, keyarg):
     ## Below: check every 2 sec if the job has finished.
-    state = check_state_comet(query_cmd, job_id, keyarg)
+    state = check_state_lsi(query_cmd, job_id, keyarg)
     start_time = time.time()
     interval = 2
     # i = 1
     # while state!='completed':
     #     time.sleep(start_time + i*interval - time.time())
-    #     state = check_state_comet(query_cmd, job_id, keyarg)
+    #     state = check_state_lsi(query_cmd, job_id, keyarg)
     #     i = i + 1
-    while state!='completed':
+    while state!='C':
         time.sleep(interval)
-        state = check_state_comet(query_cmd, job_id, keyarg)
+        state = check_state_lsi(query_cmd, job_id, keyarg)
 
 def check_output_good(**args):
     ## Disable all console outputs

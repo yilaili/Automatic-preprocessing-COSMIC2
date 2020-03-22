@@ -6,10 +6,10 @@
     "runerr": "2> run_ctf.err "
   },
   "CTFFIND4": {
-    "module": "module load relion/3.0.8_cpu",
+    "module": "module load relion/3.0-beta-cluster",
     "extra": "",
     "conda_env": "conda activate pipeline",
-    "command": "mpirun -np $$np relion_run_ctffind_mpi ",
+    "command": "mpirun $NSLOTS `which relion_run_ctffind_mpi` ",
     "parameters": "--CS $$CS --HT $$HT --AmpCnst 0.1 --XMAG $$XMAG --DStep $$DStep --Box 512 --ResMin 30 --ResMax 5 --dFMin 5000 --dFMax 50000 --FStep 500 --dAst 100 --ctffind_exe /home/cosmic2/software_dependencies/ctffind-4.1.13/ctffind --ctfWin -1 --is_ctffind4 --fast_search ",
     "tail": ""
   }

@@ -4,10 +4,10 @@ import argparse
 import os
 import sys
 import subprocess
-from check_if_done import check_state_comet
+from check_if_done import check_state_lsi
 import time
 import shutil
-from write_submit_script_comet import write_submit_comet
+from write_submit_script_lsi import write_submit_lsi
 import re
 
 '''
@@ -32,14 +32,14 @@ def setupParserOptions():
     ap.add_argument('--XMAG', default='10000', help='Magnification')
     ap.add_argument('--DStep', help='Pixel size')
     ## Cluster submission needed
-    ap.add_argument('--template', default='comet_submit_template.sh',
-                    help="Name of the submission template. Currently only supports comet_submit_template.sh")
-    ap.add_argument('--cluster', default='comet-cpu',
-                    help='The computer cluster the job will run on. Currently only supports comet-cpu.')
+    ap.add_argument('--template', default='lsi_submit_template.sh',
+                    help="Name of the submission template.")
+    ap.add_argument('--cluster', default='lsi',
+                    help='The computer cluster the job will run on.')
     ap.add_argument('--jobname', default='CTF', help='Jobname on the submission script.')
-    ap.add_argument('--user_email', help='User email address to send the notification to.')
+    # ap.add_argument('--user_email', help='User email address to send the notification to.')
     ap.add_argument('--walltime', default='05:00:00', help='Expected max run time of the job.')
-    ap.add_argument('--nodes', default='5', help='Number of nodes used in the computer cluster.')
+    ap.add_argument('--nodes', default='2', help='Number of nodes used in the computer cluster.')
     args = vars(ap.parse_args())
     return args
 
@@ -83,31 +83,31 @@ def submit(**args):
         job_config = json.load(f)
 
     jobname = args['jobname']
-    user_email = args['user_email']
+    # user_email = args['user_email']
     walltime = args['walltime']
     program = args['program']
     nodes = args['nodes']
-    np = str(4*int(nodes))
+    # np = str(4*int(nodes))
     input = '--i %s ' %args['input']
     output = '--o %s ' %args['output']
     stdout = os.path.join('> %s'%args['output'], 'run_%s.out '%args['program'])
     stderr = os.path.join('2> %s'%args['output'], 'run_%s.err '%args['program'])
-    module = 'module load relion/3.0.8_cpu'
+    module = 'module load relion/3.0-beta-cluster'
     conda_env = 'conda activate pipeline'
-    command = 'mpirun -np %s relion_run_ctffind_mpi '%np
+    command = 'mpirun $NSLOTS `which relion_run_ctffind_mpi` '
     parameters = editparameters(job_config[program]['parameters'], \
                                 args['CS'], args['HT'], args['XMAG'], args['DStep'])
 
-    write_submit_comet(codedir, wkdir, submit_name, \
-                        jobname, user_email, walltime, nodes, \
+    write_submit_lsi(codedir, wkdir, submit_name, \
+                        jobname, walltime, nodes, \
                         job_config_file, program, \
                         input, output, stdout, stderr, \
                         module, conda_env, command, parameters, \
                         template_file=args['template'],\
-                        cluster='comet-cpu')
+                        cluster='lsi')
 
     os.chdir(wkdir)
-    cmd='sbatch ' + submit_name
+    cmd='qsub ' + submit_name
     job_id = subprocess.check_output(cmd, shell=True)
     job_id = job_id.decode("utf-8")
     job_id = re.findall('job (\d+)', job_id)[0]
@@ -122,17 +122,17 @@ def check_complete(job_id, query_cmd, keyarg, **args):
     wkdir = os.path.abspath(os.path.dirname(args['input']))
     os.chdir(wkdir)
     ## Below: check every 2 seconds if the job has finished.
-    state = check_state_comet(query_cmd, job_id, keyarg)
+    state = check_state_lsi(query_cmd, job_id, keyarg)
     start_time = time.time()
     interval = 2
     # i = 1
     # while state!='completed':
     #     time.sleep(start_time + i*interval - time.time())
-    #     state = check_state_comet(query_cmd, job_id, keyarg)
+    #     state = check_state_lsi(query_cmd, job_id, keyarg)
     #     i = i + 1
-    while state!='completed':
+    while state!='C':
         time.sleep(interval)
-        state = check_state_comet(query_cmd, job_id, keyarg)
+        state = check_state_lsi(query_cmd, job_id, keyarg)
     ## Below: check if the ctf output is correct.
     os.chdir(wkdir)
     isgood = check_good(wkdir, args['input'], os.path.join(args['output'], 'micrographs_ctf.star'))
