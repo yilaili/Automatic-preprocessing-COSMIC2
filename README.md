@@ -1,10 +1,8 @@
-Automatic preprocessing for cryoEM on LSI cluster (U of Michigan)
+## Automatic preprocessing for cryoEM on LSI cluster (U of Michigan)
 
 Code to run the automatic preprocessing workflow on LSI cluster.
 
-To use:
-1. Navigate to the desired directory
-2. Setup conda environment
+# First, you need to setup the conda environments
 
 First, setup cryolo:
 ```
@@ -39,7 +37,8 @@ pip install pandas
 conda deactivate
 ```
 
-3. Example:
+To use:
+Navigate to the desired directory:
 ```
 python submit_pipeline.py --input_dir <directory contains all the micrographs> --CS 2.7 --HT 300 --apix 0.66 --final_apix 1
 ```
