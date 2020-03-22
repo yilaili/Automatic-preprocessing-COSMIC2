@@ -92,8 +92,8 @@ def submit(**args):
     output = '--o %s ' %args['output']
     stdout = os.path.join('> %s'%args['output'], 'run_%s.out '%args['program'])
     stderr = os.path.join('2> %s'%args['output'], 'run_%s.err '%args['program'])
-    module = 'module load relion/3.0-beta-cluster'
-    conda_env = 'source activate pipeline'
+    module = 'module load relion/3.0.8-cluster/openmpi/4.0.2'
+    conda_env = ''
     command = 'mpirun -np $NSLOTS `which relion_run_ctffind_mpi` '
     parameters = editparameters(job_config[program]['parameters'], \
                                 args['CS'], args['HT'], args['XMAG'], args['DStep'])

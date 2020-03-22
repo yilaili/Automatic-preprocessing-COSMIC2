@@ -106,8 +106,8 @@ def submit(**args):
     args['part_star'] = os.path.join(args['part_dir'], args['part_star']) # particle star file should be inside the particle dir folder
     stdout = os.path.join('> %s'%args['part_dir'], 'run_%s.out '%args['program'])
     stderr = os.path.join('2> %s'%args['part_dir'], 'run_%s.err '%args['program'])
-    module = 'module load relion/3.0-beta-cluster'
-    conda_env = 'source activate pipeline'
+    module = 'module load relion/3.0.8-cluster/openmpi/4.0.2'
+    conda_env = ''
     command = 'mpirun -np $NSLOTS `which relion_preprocess_mpi` '
 
     scale_factor = float(args['scaled_apix'])/float(args['apix'])
