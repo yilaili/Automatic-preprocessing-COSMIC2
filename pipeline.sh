@@ -8,7 +8,7 @@ start_boxsize=150
 
 module purge
 module load python-anaconda3/latest
-source activate pipeline
+conda activate pipeline
 
 printf 'data_\nloop_\n_rlnMicrographName\n' >> $input_star | ls $input_dir/*.mrc >> $input_star
 
