@@ -18,6 +18,6 @@ module load python-anaconda3/latest
 $$modules
 $$extra
 $$conda_env
-
+cd $PBS_O_WORKDIR
 ### Run:
 $$command_to_run
