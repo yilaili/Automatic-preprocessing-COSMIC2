@@ -49,11 +49,11 @@ diam3=$size
 # diam5=$(echo "$size*1.5" | bc)
 # diam5=${diam5%.*}
 
-# python /lsi/groups/mcianfroccolab/yilai/codes/Automatic-preprocessing-COSMIC2/submit_2DClass.py -i extract/particles.star -d $diam1 --user_email $user_email --nodes 5 &
-# python /lsi/groups/mcianfroccolab/yilai/codes/Automatic-preprocessing-COSMIC2/submit_2DClass.py -i extract/particles.star -d $diam2 --user_email $user_email --nodes 5 &
-python /lsi/groups/mcianfroccolab/yilai/codes/Automatic-preprocessing-COSMIC2/submit_2DClass.py -i extract/particles.star -d $diam3 --user_email $user_email --nodes 5 &
-# python /lsi/groups/mcianfroccolab/yilai/codes/Automatic-preprocessing-COSMIC2/submit_2DClass.py -i extract/particles.star -d $diam4 --user_email $user_email --nodes 8 &
-# python /lsi/groups/mcianfroccolab/yilai/codes/Automatic-preprocessing-COSMIC2/submit_2DClass.py -i extract/particles.star -d $diam5 --user_email $user_email --nodes 20 &
+# python /lsi/groups/mcianfroccolab/yilai/codes/Automatic-preprocessing-COSMIC2/submit_2DClass.py -i extract/particles.star -d $diam1 --nodes 5 &
+# python /lsi/groups/mcianfroccolab/yilai/codes/Automatic-preprocessing-COSMIC2/submit_2DClass.py -i extract/particles.star -d $diam2 --nodes 5 &
+python /lsi/groups/mcianfroccolab/yilai/codes/Automatic-preprocessing-COSMIC2/submit_2DClass.py -i extract/particles.star -d $diam3 --nodes 10
+# python /lsi/groups/mcianfroccolab/yilai/codes/Automatic-preprocessing-COSMIC2/submit_2DClass.py -i extract/particles.star -d $diam4 --nodes 8 &
+# python /lsi/groups/mcianfroccolab/yilai/codes/Automatic-preprocessing-COSMIC2/submit_2DClass.py -i extract/particles.star -d $diam5 --nodes 20 &
 # wait
 
 python /lsi/groups/mcianfroccolab/yilai/codes/Automatic-preprocessing-COSMIC2/submit_2dassess.py -i 2DClass --mrcs_name run_it025_classes.mrcs -o 2DAssess --starfile run_it025_model.star
