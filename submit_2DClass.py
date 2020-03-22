@@ -44,8 +44,8 @@ def setupParserOptions():
     args = vars(ap.parse_args())
     return args
 
-def editparameters(s, diameter, k):
-    new_s = s.replace('$$diameter', diameter).replace('$$K', k)
+def editparameters(s, diameter, k, nodes):
+    new_s = s.replace('$$diameter', diameter).replace('$$K', k).replace('$$nodes', nodes)
     return new_s
 
 def check_good(class_dir):
@@ -93,7 +93,7 @@ def submit(**args):
     conda_env = ''
     command = 'mpirun -np $NSLOTS `which relion_refine_mpi` '
     parameters = editparameters(job_config[program]['parameters'], \
-                                args['diameter'], args['numclass'])
+                                args['diameter'], args['numclass'], args['nodes'])
 
     write_submit_lsi(codedir, wkdir, submit_name, \
                         jobname, walltime, nodes, \

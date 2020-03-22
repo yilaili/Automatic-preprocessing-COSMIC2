@@ -10,7 +10,7 @@
     "extra": "",
     "conda_env": "",
     "command": "mpirun -np $NSLOTS `which relion_refine_mpi` ",
-    "parameters": "--dont_combine_weights_via_disc --pool 100 --pad 2 --ctf --iter 25 --tau2_fudge 2 --particle_diameter $$diameter --fast_subsets --K $$K --flatten_solvent --zero_mask --oversampling 1 --psi_step 12 --offset_range 5 --offset_step 2 --norm --scale --j $NSLOTS ",
+    "parameters": "--dont_combine_weights_via_disc --pool 100 --pad 2 --ctf --iter 25 --tau2_fudge 2 --particle_diameter $$diameter --fast_subsets --K $$K --flatten_solvent --zero_mask --oversampling 1 --psi_step 12 --offset_range 5 --offset_step 2 --norm --scale --j $$nodes ",
     "tail": ""
   }
 }
