@@ -24,12 +24,6 @@ Then, setup cryoassess:
 ```
 conda create -n cryoassess-cpu -c anaconda python=3.6 pyqt=5 cudnn=7.1.2 numpy=1.14.5 intel-openmp=2019.4
 ```
-```
-conda activate cryoassess-cpu
-```
-```
-conda deactivate
-```
 
 Last, setup pipeline:
 ```
