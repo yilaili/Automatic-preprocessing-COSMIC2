@@ -73,11 +73,11 @@ def cryolo_editconfig(config, pixel_boxsize):
 def check_good(runout, wkdir):
     '''
     Currently only works for cryolo.
-    Check if 'particles in total are found' is in the last 5 lines
+    Check if 'particles in total are found' is in the last 15 lines
     of the run_ppicker.out file.
     '''
     os.chdir(wkdir)
-    cmd = 'tail -5 '+ runout
+    cmd = 'tail -15 '+ runout
     last_line = subprocess.check_output(cmd, shell=True).decode("utf-8")
     str = 'particles in total are found'
     return last_line.find(str) != -1
