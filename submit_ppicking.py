@@ -38,7 +38,7 @@ def setupParserOptions():
     ap.add_argument('--apix', help='Pixel size in Angstrom.')
     ap.add_argument('--distance',
                     help='Only if you use cryolo. The minimum distance of two picked particles.')
-    ap.add_argument('--model', default='/home/yilaili/codes/Automatic-preprocessing-COSMIC2/models/gmodel_phosnet_201912_N63.h5',
+    ap.add_argument('--model', default='/lsi/groups/mcianfroccolab/yilai/codes/Automatic-preprocessing-COSMIC2/models/gmodel_phosnet_201912_N63.h5',
                     help='Model of cryolo. Currently only support cryolo.')
     ap.add_argument('--thresh', default='0.1',
                     help='Only if you use cryolo. Threshold number of cryolo.')
