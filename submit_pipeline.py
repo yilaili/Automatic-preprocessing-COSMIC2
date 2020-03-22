@@ -47,7 +47,7 @@ def submit(**args):
     cmd='qsub submit_pipeline.sh'
     job_id = subprocess.check_output(cmd, shell=True)
     job_id = job_id.decode("utf-8")
-    job_id = re.findall('job (\d+)', job_id)[0]
+    job_id = str(int(job_id))
     print(job_id)
 
 if __name__ == '__main__':
