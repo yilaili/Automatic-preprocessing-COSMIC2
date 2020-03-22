@@ -139,7 +139,7 @@ def submit(**args):
     cmd='qsub ' + submit_name
     job_id = subprocess.check_output(cmd, shell=True)
     job_id = job_id.decode("utf-8")
-    job_id = re.findall('job (\d+)', job_id)[0]
+    job_id = str(int(job_id))
     with open('%s_log.txt' %args['program'], 'a+') as f:
         f.write('Job submitted. Job ID is %s.\n' %(job_id))
     query_cmd = cluster_config[cluster]['query_cmd']
