@@ -28,7 +28,7 @@ def setupParserOptions():
     ap.add_argument('-p', '--program', default='2dassess',
                     help='The program to use to do micrograph assessment. Currently only supports 2dassess.')
     ## Program specific parameters
-    ap.add_argument('-m', '--model', default='/home/yilaili/codes/Automatic-preprocessing-COSMIC2/models/2dassess_062119.h5',
+    ap.add_argument('-m', '--model', default='/lsi/groups/mcianfroccolab/yilai/codes/Automatic-preprocessing-COSMIC2/models/2dassess_062119.h5',
                     help="Model file (.h5 file) for 2DAssess.")
     ap.add_argument('--starfile',
                     help="Name of the _model.star file for the input mrc file.")
