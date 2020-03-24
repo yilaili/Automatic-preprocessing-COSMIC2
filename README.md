@@ -22,6 +22,9 @@ Then, setup cryoassess:
 ```
 conda create -n cryoassess-cpu -c anaconda python=3.6 pyqt=5 cudnn=7.1.2 numpy=1.14.5 intel-openmp=2019.4
 ```
+```
+pip install tensorflow==1.10.1 keras==2.2.5 Pillow==4.3.0 mrcfile==1.1.2 pandas==0.25.3 opencv-python==4.1.2.30 scikit-image==0.16.2
+```
 
 Last, setup pipeline:
 ```
