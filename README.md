@@ -9,7 +9,7 @@ First, setup cryolo:
 conda create -n cryolo-cpu -c anaconda python=3.6 pyqt=5 cudnn=7.1.2 numpy==1.14.5 cython wxPython==4.0.4 intel-openmp==2019.4
 ```
 ```
-conda activate cryolo
+conda activate cryolo-cpu
 ```
 ```
 pip install 'cryolo[cpu]'
