@@ -36,6 +36,8 @@ def readCBOX(input_dir, partnum_threshold=20):
                 x = np.array([float(l.split()[5]) for l in lines])
                 y = np.array([float(l.split()[6]) for l in lines])
                 one_boxsizes = np.concatenate([x, y])
+            else:
+                one_boxsizes = None
         cryolo_boxsizes = np.concatenate([cryolo_boxsizes, one_boxsizes])
     return cryolo_boxsizes
 
