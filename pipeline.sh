@@ -24,8 +24,8 @@ conda activate pipeline
 printf 'data_\nloop_\n_rlnMicrographName\n' >> $input_star | ls $input_dir/*.mrc >> $input_star
 
 python /lsi/groups/mcianfroccolab/yilai/codes/Automatic-preprocessing-COSMIC2/mrc_size.py -i $input_dir
-height = $(sed -n '1p' mrc_size.txt)
-width = $(sed -n '2p' mrc_size.txt)
+height=$(sed -n '1p' mrc_size.txt)
+width=$(sed -n '2p' mrc_size.txt)
 
 python /lsi/groups/mcianfroccolab/yilai/codes/Automatic-preprocessing-COSMIC2/submit_micassess.py -i $input_star
 python /lsi/groups/mcianfroccolab/yilai/codes/Automatic-preprocessing-COSMIC2/submit_ctf.py -i micrographs_micassess.star -o ctf --CS $CS --HT $HT --DStep $apix --nodes 2
