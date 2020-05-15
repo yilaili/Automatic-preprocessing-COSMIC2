@@ -24,8 +24,8 @@ conda activate pipeline
 ### printf 'data_\nloop_\n_rlnMicrographName\n' >> $input_star | ls $input_dir/*.mrc >> $input_star
 
 python /home/yilaili/codes/Automatic-preprocessing-COSMIC2/mrc_size.py -i $input_dir
-height = $(sed -n '1p' mrc_size.txt)
-width = $(sed -n '2p' mrc_size.txt)
+height=$(sed -n '1p' mrc_size.txt)
+width=$(sed -n '2p' mrc_size.txt)
 
 
 python /home/yilaili/codes/Automatic-preprocessing-COSMIC2/submit_micassess.py -i $input_star --user_email $user_email
