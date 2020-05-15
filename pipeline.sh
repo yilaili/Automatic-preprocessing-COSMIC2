@@ -23,6 +23,11 @@ conda activate pipeline
 
 ### printf 'data_\nloop_\n_rlnMicrographName\n' >> $input_star | ls $input_dir/*.mrc >> $input_star
 
+python /home/yilaili/codes/Automatic-preprocessing-COSMIC2/mrc_size.py -i $input_dir
+height = $(sed -n '1p' mrc_size.txt)
+width = $(sed -n '2p' mrc_size.txt)
+
+
 python /home/yilaili/codes/Automatic-preprocessing-COSMIC2/submit_micassess.py -i $input_star --user_email $user_email
 python /home/yilaili/codes/Automatic-preprocessing-COSMIC2/submit_ctf.py -i micrographs_micassess.star -o ctf --CS $CS --HT $HT --DStep $apix --user_email $user_email --nodes 1
 python /home/yilaili/codes/Automatic-preprocessing-COSMIC2/filter_goodmic.py -i $input_dir -o good_micrographs -g micrographs_micassess.star
@@ -35,6 +40,8 @@ rm -r tmp_filtered
 
 size=$(head -1 findsize.txt)
 python /home/yilaili/codes/Automatic-preprocessing-COSMIC2/submit_ppicking.py -i good_micrographs -o ppicking --boxsize $size --apix $apix --user_email $user_email
+
+python /home/yilaili/codes/Automatic-preprocessing-COSMIC2/rm_edge_particles.py -i ppicker/ --height $height --width $width -b $size --apix $apix
 
 let extract_size=2*$size
 python /home/yilaili/codes/Automatic-preprocessing-COSMIC2/submit_extract.py -i ctf/micrographs_ctf.star --coord_dir ppicking --part_dir extract --part_star particles.star --apix $apix --extract_size $extract_size --user_email $user_email --nodes 1
