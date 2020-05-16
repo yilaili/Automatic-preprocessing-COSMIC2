@@ -21,7 +21,7 @@ def setupParserOptions():
     args = vars(ap.parse_args())
     return args
 
-def readCBOX(input_dir, partnum_threshold=20):
+def readCBOX(input_dir, partnum_threshold=10):
     '''
     Read all the .cbox files in the directory, return an np.array with all the
     estimated box sizes.
@@ -32,7 +32,7 @@ def readCBOX(input_dir, partnum_threshold=20):
     for cbox_file in os.listdir(input_dir):
         with open(os.path.join(input_dir, cbox_file)) as f:
             lines = f.readlines()
-            if len(lines) >= 20:
+            if len(lines) >= partnum_threshold:
                 x = np.array([float(l.split()[5]) for l in lines])
                 y = np.array([float(l.split()[6]) for l in lines])
                 one_boxsizes = np.concatenate([x, y])
