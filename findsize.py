@@ -32,12 +32,12 @@ def readCBOX(input_dir, partnum_threshold=10):
     for cbox_file in os.listdir(input_dir):
         with open(os.path.join(input_dir, cbox_file)) as f:
             lines = f.readlines()
-            if len(lines) >= partnum_threshold:
-                x = np.array([float(l.split()[5]) for l in lines])
-                y = np.array([float(l.split()[6]) for l in lines])
-                one_boxsizes = np.concatenate([x, y])
-            else:
-                one_boxsizes = None
+            # if len(lines) >= partnum_threshold:
+            x = np.array([float(l.split()[5]) for l in lines])
+            y = np.array([float(l.split()[6]) for l in lines])
+            one_boxsizes = np.concatenate([x, y])
+            # else:
+                # one_boxsizes = None
         cryolo_boxsizes = np.concatenate([cryolo_boxsizes, one_boxsizes])
     return cryolo_boxsizes
 
