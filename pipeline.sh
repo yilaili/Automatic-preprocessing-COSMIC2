@@ -41,7 +41,7 @@ rm -r tmp_filtered
 size=$(head -1 findsize.txt)
 python /home/yilaili/codes/Automatic-preprocessing-COSMIC2/submit_ppicking.py -i good_micrographs -o ppicking --boxsize $size --apix $apix --user_email $user_email
 
-python /home/yilaili/codes/Automatic-preprocessing-COSMIC2/rm_edge_coord.py -i ppicker/ --height $height --width $width -b $size --apix $apix
+python /home/yilaili/codes/Automatic-preprocessing-COSMIC2/rm_edge_coord.py -i ppicking/ --height $height --width $width -b $size --apix $apix
 
 let extract_size=2*$size
 python /home/yilaili/codes/Automatic-preprocessing-COSMIC2/submit_extract.py -i ctf/micrographs_ctf.star --coord_dir ppicking --part_dir extract --part_star particles.star --apix $apix --extract_size $extract_size --user_email $user_email --nodes 1
