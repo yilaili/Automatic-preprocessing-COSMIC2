@@ -41,7 +41,7 @@ size=$(head -1 findsize.txt)
 python /lsi/groups/mcianfroccolab/yilai/codes/Automatic-preprocessing-COSMIC2/submit_ppicking.py -i good_micrographs -o ppicking --boxsize $size --apix $apix
 
 let extract_size=2*$size
-python /lsi/groups/mcianfroccolab/yilai/codes/Automatic-preprocessing-COSMIC2/rm_edge_coord.py -i ppicker/ --height $height --width $width -b $extract_size --apix $apix
+python /lsi/groups/mcianfroccolab/yilai/codes/Automatic-preprocessing-COSMIC2/rm_edge_coord.py -i ppicking/ --height $height --width $width -b $extract_size --apix $apix
 python /lsi/groups/mcianfroccolab/yilai/codes/Automatic-preprocessing-COSMIC2/submit_extract.py -i ctf/micrographs_ctf.star --coord_dir ppicking --part_dir extract --part_star particles.star --apix $apix --extract_size $extract_size --nodes 2
 
 # diam1=$(echo "$size*0.5" | bc)
