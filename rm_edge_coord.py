@@ -38,7 +38,7 @@ def rm_edge(**args):
     height = int(args['height'])
     apix = float(args['apix'])
 
-    for p in glob.glob(os.path.join(args['input'], micrographs, '*')):
+    for p in glob.glob(os.path.join(args['input'], 'micrographs', '*')):
 
         with open(p) as f:
             coord = f.readlines()
