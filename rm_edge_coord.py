@@ -39,6 +39,8 @@ def rm_edge(**args):
     apix = float(args['apix'])
 
     for p in glob.glob(os.path.join(args['input'], 'micrographs', '*')):
+        print(os.getcwd())
+        print(p)
 
         with open(p) as f:
             coord = f.readlines()
@@ -55,6 +57,8 @@ def rm_edge(**args):
             if particle[0] > (boxsize/apix) and particle[0] < width-(boxsize/apix):
                 if particle[1] > (boxsize/apix) and particle[1] < height-(boxsize/apix):
                     good_list.append(coord[i])
+
+        print(good_list)
 
         with open(p, 'w') as f:
             for l_0 in header:
