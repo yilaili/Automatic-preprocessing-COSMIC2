@@ -31,6 +31,7 @@ def setupParserOptions():
 def rm_edge(**args):
 
     wkdir = os.path.abspath(os.path.join(args['input'], os.pardir))
+    os.chdir(wkdir)
 
     boxsize = int(args['boxsize'])
     width = int(args['width'])
@@ -39,7 +40,6 @@ def rm_edge(**args):
 
     for p in glob.glob(os.path.join(args['input'], 'micrographs', '*')):
 
-        os.chdir(wkdir)
         with open(p) as f:
             coord = f.readlines()
 
@@ -59,8 +59,8 @@ def rm_edge(**args):
         with open(p, 'w') as f:
             for l_0 in header:
                 f.write(l_0)
-            for l_1 in good_list:
-                f.write(l_1)
+            # for l_1 in good_list:
+                # f.write(l_1)
 
     print('Removed particle coordinates that will clip the micrograph edges.')
 
