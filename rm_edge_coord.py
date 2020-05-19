@@ -32,6 +32,8 @@ def rm_edge(**args):
 
     wkdir = os.path.abspath(os.path.join(args['input'], os.pardir))
     os.chdir(wkdir)
+    print(wkdir)
+    print(glob.glob(os.path.join(args['input'], 'micrographs', '*'))[0])
 
     boxsize = int(args['boxsize'])
     width = int(args['width'])
@@ -39,8 +41,6 @@ def rm_edge(**args):
     apix = float(args['apix'])
 
     for p in glob.glob(os.path.join(args['input'], 'micrographs', '*')):
-        print(os.getcwd())
-        print(p)
 
         with open(p) as f:
             coord = f.readlines()
@@ -58,15 +58,11 @@ def rm_edge(**args):
                 if particle[1] > (boxsize/apix) and particle[1] < height-(boxsize/apix):
                     good_list.append(coord[i])
 
-        print(good_list)
-
         with open(p, 'w') as f:
             for l_0 in header:
                 f.write(l_0)
             # for l_1 in good_list:
                 # f.write(l_1)
-        print(p)
-        print(os.getcwd())
 
     print('Removed particle coordinates that will clip the micrograph edges.')
 
