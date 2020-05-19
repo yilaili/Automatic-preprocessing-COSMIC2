@@ -190,7 +190,7 @@ def check_complete(job_id, query_cmd, keyarg, **args):
     isgood = check_good(stdout, wkdir)
     if isgood:
         os.mkdir(os.path.join(args['output'], 'micrographs'))
-        cmd = 'mv '+ os.path.join(os.path.join(args['output'], 'STAR'), '*') \
+        cmd = 'cp '+ os.path.join(os.path.join(args['output'], 'STAR'), '*') \
         + ' ' + os.path.join(args['output'], 'micrographs')
         subprocess.call(cmd, shell=True)
         with open('%s_log.txt' %suffix, 'a+') as f:
