@@ -31,7 +31,6 @@ def setupParserOptions():
 def rm_edge(**args):
 
     wkdir = os.path.abspath(os.path.join(args['input'], os.pardir))
-    os.chdir(wkdir)
 
     boxsize = int(args['boxsize'])
     width = int(args['width'])
@@ -40,6 +39,7 @@ def rm_edge(**args):
 
     for p in glob.glob(os.path.join(args['input'], 'micrographs', '*')):
 
+        os.chdir(wkdir)
         with open(p) as f:
             coord = f.readlines()
 
