@@ -46,22 +46,22 @@ python /home/yilaili/codes/Automatic-preprocessing-COSMIC2/rm_edge_coord.py -i p
 let extract_size=2*$size
 python /home/yilaili/codes/Automatic-preprocessing-COSMIC2/submit_extract.py -i ctf/micrographs_ctf.star --coord_dir ppicking --part_dir extract --part_star particles.star --apix $apix --extract_size $extract_size --user_email $user_email --nodes 1
 
-diam1=$(echo "$size*0.5" | bc)
-diam1=${diam1%.*}
-diam2=$(echo "$size*0.8" | bc)
-diam2=${diam2%.*}
+# diam1=$(echo "$size*0.5" | bc)
+# diam1=${diam1%.*}
+# diam2=$(echo "$size*0.8" | bc)
+# diam2=${diam2%.*}
 diam3=$size
-diam4=$(echo "$size*1.2" | bc)
-diam4=${diam4%.*}
-diam5=$(echo "$size*1.5" | bc)
-diam5=${diam5%.*}
+# diam4=$(echo "$size*1.2" | bc)
+# diam4=${diam4%.*}
+# diam5=$(echo "$size*1.5" | bc)
+# diam5=${diam5%.*}
 
-python /home/yilaili/codes/Automatic-preprocessing-COSMIC2/submit_2DClass.py -i extract/particles.star -d $diam1 --user_email $user_email --nodes 5 &
-python /home/yilaili/codes/Automatic-preprocessing-COSMIC2/submit_2DClass.py -i extract/particles.star -d $diam2 --user_email $user_email --nodes 5 &
+# python /home/yilaili/codes/Automatic-preprocessing-COSMIC2/submit_2DClass.py -i extract/particles.star -d $diam1 --user_email $user_email --nodes 5 &
+# python /home/yilaili/codes/Automatic-preprocessing-COSMIC2/submit_2DClass.py -i extract/particles.star -d $diam2 --user_email $user_email --nodes 5 &
 python /home/yilaili/codes/Automatic-preprocessing-COSMIC2/submit_2DClass.py -i extract/particles.star -d $diam3 --user_email $user_email --nodes 5 &
-python /home/yilaili/codes/Automatic-preprocessing-COSMIC2/submit_2DClass.py -i extract/particles.star -d $diam4 --user_email $user_email --nodes 8 &
-python /home/yilaili/codes/Automatic-preprocessing-COSMIC2/submit_2DClass.py -i extract/particles.star -d $diam5 --user_email $user_email --nodes 20 &
-wait
+# python /home/yilaili/codes/Automatic-preprocessing-COSMIC2/submit_2DClass.py -i extract/particles.star -d $diam4 --user_email $user_email --nodes 8 &
+# python /home/yilaili/codes/Automatic-preprocessing-COSMIC2/submit_2DClass.py -i extract/particles.star -d $diam5 --user_email $user_email --nodes 20 &
+# wait
 
 python /home/yilaili/codes/Automatic-preprocessing-COSMIC2/submit_2dassess.py -i 2DClass --mrcs_name run_it025_classes.mrcs -o 2DAssess --starfile run_it025_model.star --user_email $user_email
 python /home/yilaili/codes/Automatic-preprocessing-COSMIC2/write_good_particles.py -i run_it025_data.star -c 2DClass -g good_part_frac.txt -o selected_particles.star
