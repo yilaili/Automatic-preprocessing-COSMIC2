@@ -122,8 +122,8 @@ def write_submit_comet(codedir, wkdir, submit_name, \
     except OSError:
         pass
     ## Below: write the submission file
-    with open(os.path.join(codedir, template_file), 'r') as f:
-        with open(submit_name, 'w') as new_f:
+    with open(os.path.join(codedir, template_file), 'r', encoding="utf-8") as f:
+        with open(submit_name, 'w', encoding="utf-8") as new_f:
             for line in f:
                 # newline = line.decode('utf-8').replace('$$job_name', cluster_config[cluster]['job_name'])\
                 newline = line.replace('$$job_name', cluster_config[cluster]['job_name'])\
