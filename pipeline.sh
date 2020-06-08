@@ -7,6 +7,7 @@ apix=$$apix
 final_apix=$$final_apix
 start_boxsize=150
 
+module purge
 module load anaconda/4.7.12
 __conda_setup="$('/share/apps/compute/anaconda/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
