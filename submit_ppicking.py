@@ -127,7 +127,7 @@ def submit(**args):
     stdout = os.path.join('> %s'%args['output'], 'run_%s.out '%args['program'])
     stderr = os.path.join('2> %s'%args['output'], 'run_%s.err '%args['program'])
     module = ' '
-    conda_env = 'conda activate cryolo-pipeline'
+    conda_env = 'conda activate /projects/cosmic2/conda/cryolo-pipeline'
     command = 'cryolo_predict.py '
     pixel_boxsize = str(int(int(args['boxsize']) / float(args['apix']))) # Convert boxsize from Angstrom to pixels
     suffix = program + '_d' + pixel_boxsize + 't' + args['thresh'] # suffix e.g.: cryolo_d130t0.3

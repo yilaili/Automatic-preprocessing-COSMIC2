@@ -103,7 +103,7 @@ def submit(**args):
     stdout = os.path.join('> %s'%args['output'], 'run_%s.out '%args['program'])
     stderr = os.path.join('2> %s'%args['output'], 'run_%s.err ' %args['program'])
     module = ' '
-    conda_env = 'conda activate cryoassess'
+    conda_env = 'conda activate /projects/cosmic2/conda/cryoassess'
     command = 'python /home/yilaili/codes/Automatic-preprocessing-COSMIC2/2dassess_pipeline.py '
     parameters = editparameters(job_config[program]['parameters'], args['model'], \
                                 dir_list[0], args['starfile'], args['outfile'])

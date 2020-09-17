@@ -92,7 +92,7 @@ def submit(**args):
     stdout = os.path.join('> %s'%output_dir, 'run_%s.out '%args['program'])
     stderr = os.path.join('2> %s'%output_dir, 'run_%s.err '%args['program'])
     module = 'module load relion/3.0.8_cpu'
-    conda_env = 'conda activate pipeline'
+    conda_env = 'conda activate /projects/cosmic2/conda/pipeline'
     command = 'mpirun -np %s relion_refine_mpi '%np
     parameters = editparameters(job_config[program]['parameters'], \
                                 args['diameter'], args['numclass'])

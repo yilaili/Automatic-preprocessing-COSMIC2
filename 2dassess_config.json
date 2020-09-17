@@ -8,7 +8,7 @@
   "2dassess": {
     "module": " ",
     "extra": " ",
-    "conda_env": "conda activate cryoassess",
+    "conda_env": "conda activate /projects/cosmic2/conda/cryoassess",
     "command": "python /home/yilaili/codes/Automatic-preprocessing-COSMIC2/2dassess_pipeline.py ",
     "parameters": "-m $$model -n $$name --starfile $$starfile --outfile $$outfile ",
     "tail": " "

@@ -82,7 +82,7 @@ def submit(**args):
     stdout = '> run_%s.out ' %args['program']
     stderr = '2> run_%s.err ' %args['program']
     module = ' '
-    conda_env = 'conda activate cryoassess'
+    conda_env = 'conda activate /projects/cosmic2/conda/cryoassess'
     command = 'python /home/yilaili/codes/Automatic-preprocessing-COSMIC2/micassess.py '
     parameters = editparameters(job_config[program]['parameters'], args['model'], args['threshold'])
 

@@ -30,6 +30,6 @@ else
     fi
 fi
 unset __conda_setup
-conda activate pipeline
+conda activate /projects/cosmic2/conda/pipeline
 
 bash pipeline.sh > run_pipeline.out 2> run_pipeline.err

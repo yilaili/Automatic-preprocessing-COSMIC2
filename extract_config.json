@@ -8,7 +8,7 @@
   "relion_extract": {
     "module": "module load relion/3.0.8_cpu",
     "extra": "",
-    "conda_env": "conda activate pipeline",
+    "conda_env": "conda activate /projects/cosmic2/conda/pipeline",
     "command": "mpirun -np $$np relion_preprocess_mpi ",
     "parameters": "--coord_suffix $$coord_suffix --coord_dir $$coord_dir --part_dir $$part_dir --part_star $$part_star --extract --extract_size $$extract_size --norm --bg_radius $$bg_radius --white_dust 5 --black_dust 5 --invert_contrast --scale $$scale  ",
     "tail": ""
@@ -16,7 +16,7 @@
   "relion_reextract": {
     "module": "module load relion/3.0.8_cpu",
     "extra": "",
-    "conda_env": "conda activate pipeline",
+    "conda_env": "conda activate /projects/cosmic2/conda/pipeline",
     "command": "mpirun -np $$np relion_preprocess_mpi ",
     "parameters": "--coord_suffix $$coord_suffix --coord_dir $$coord_dir --part_dir $$part_dir --part_star $$part_star --reextract_data_star $$reextract_data_star --recenter --recenter_x 0 --recenter_y 0 --recenter_z 0 --extract --extract_size $$extract_size --norm --bg_radius $$bg_radius --white_dust 5 --black_dust 5 --invert_contrast --scale $$scale  ",
     "tail": ""

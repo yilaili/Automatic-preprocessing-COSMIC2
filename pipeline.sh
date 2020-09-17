@@ -10,6 +10,7 @@ start_boxsize=150
 export MODULEPATH=/share/apps/compute/modulefiles/applications:$MODULEPATH
 module purge
 module load anaconda/4.7.12
+
 __conda_setup="$('/share/apps/compute/anaconda/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
@@ -21,7 +22,8 @@ else
     fi
 fi
 unset __conda_setup
-conda activate pipeline
+
+conda activate /projects/cosmic2/conda/pipeline
 
 ### printf 'data_\nloop_\n_rlnMicrographName\n' >> $input_star | ls $input_dir/*.mrc >> $input_star
 
