@@ -12,7 +12,7 @@ import os
 def editclusterconfig_gpu(jobname, user_email, walltime, \
     cluster_config_file='cluster_config.json', cluster='comet-gpu', \
     allocation_name='csd547', partition='gpu-shared', nodes='1', nt_per_node='6', \
-    gpu_config='#SBATCH --gres=gpu:k80:1', gpu_config_2='#SBATCH --mem=24GB', \
+    gpu_config='#SBATCH --gres=gpu:k80:1', mem='#SBATCH --mem=24GB', \
     cpus_per_task='1', query_cmd='squeue ', keyarg='job_state = '):
 
     '''
@@ -30,7 +30,7 @@ def editclusterconfig_gpu(jobname, user_email, walltime, \
     cluster_config[cluster]['nodes'] = nodes
     cluster_config[cluster]['nt_per_node'] = nt_per_node
     cluster_config[cluster]['gpu_config'] = gpu_config
-    cluster_config[cluster]['gpu_config_2'] = gpu_config_2
+    cluster_config[cluster]['mem'] = mem
     cluster_config[cluster]['cpus_per_task'] = cpus_per_task
     cluster_config[cluster]['query_cmd'] = query_cmd
     cluster_config[cluster]['keyarg'] = keyarg
@@ -39,7 +39,7 @@ def editclusterconfig_gpu(jobname, user_email, walltime, \
 def editclusterconfig_cpu(jobname, user_email, walltime, nodes, \
     cluster_config_file='cluster_config.json', cluster='comet-cpu', \
     allocation_name='csd547', partition='compute', nt_per_node='4', \
-    gpu_config='', gpu_config_2='', cpus_per_task='6', query_cmd='squeue ', keyarg='job_state = '):
+    gpu_config='', mem='', cpus_per_task='6', query_cmd='squeue ', keyarg='job_state = '):
 
     '''
     Edit the cluster config json file. Default is using the compute cluster on comet,
@@ -56,7 +56,7 @@ def editclusterconfig_cpu(jobname, user_email, walltime, nodes, \
     cluster_config[cluster]['nodes'] = nodes
     cluster_config[cluster]['nt_per_node'] = nt_per_node
     cluster_config[cluster]['gpu_config'] = gpu_config
-    cluster_config[cluster]['gpu_config_2'] = gpu_config_2
+    cluster_config[cluster]['mem'] = mem
     cluster_config[cluster]['cpus_per_task'] = cpus_per_task
     cluster_config[cluster]['query_cmd'] = query_cmd
     cluster_config[cluster]['keyarg'] = keyarg
@@ -137,7 +137,7 @@ def write_submit_comet(codedir, wkdir, submit_name, \
                 .replace('$$nodes', cluster_config[cluster]['nodes'])\
                 .replace('$$nt_per_node', cluster_config[cluster]['nt_per_node'])\
                 .replace('$$gpu_config', cluster_config[cluster]['gpu_config'])\
-                .replace('$$gpu_config_2', cluster_config[cluster]['gpu_config_2'])\
+                .replace('$$mem', cluster_config[cluster]['mem'])\
                 .replace('$$cpus_per_task', cluster_config[cluster]['cpus_per_task'])\
                 .replace('$$modules', job_config[program]['module'])\
                 .replace('$$extra', job_config[program]['extra'])\
