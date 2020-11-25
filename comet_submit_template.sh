@@ -14,6 +14,7 @@
 #SBATCH --nodes=$$nodes # Total number of nodes requested (16 cores/node)
 #SBATCH --ntasks-per-node=$$nt_per_node       # Total number of mpi tasks requested
 $$gpu_config
+$$gpu_config_2
 #SBATCH --cpus-per-task=$$cpus_per_task
 #SBATCH --no-requeue
 #SBATCH --export=NONE
