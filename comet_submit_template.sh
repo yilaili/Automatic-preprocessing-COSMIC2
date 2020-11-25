@@ -16,6 +16,7 @@
 $$gpu_config
 #SBATCH --cpus-per-task=$$cpus_per_task
 #SBATCH --no-requeue
+#SBATCH --export=NONE
 export MODULEPATH=/share/apps/compute/modulefiles/applications:$MODULEPATH
 export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
 module purge
