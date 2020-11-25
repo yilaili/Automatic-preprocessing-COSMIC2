@@ -12,7 +12,7 @@ import os
 def editclusterconfig_gpu(jobname, user_email, walltime, \
     cluster_config_file='cluster_config.json', cluster='comet-gpu', \
     allocation_name='csd547', partition='gpu-shared', nodes='1', nt_per_node='6', \
-    gpu_config='#SBATCH --gres=gpu:k80:1', gpu_config_2="#SBATCH --mem=24GB", \
+    gpu_config='#SBATCH --gres=gpu:k80:1', gpu_config_2='#SBATCH --mem=24GB', \
     cpus_per_task='1', query_cmd='squeue ', keyarg='job_state = '):
 
     '''
