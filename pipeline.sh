@@ -62,7 +62,7 @@ diam3=$size
 
 # python /home/yilaili/codes/Automatic-preprocessing-COSMIC2/submit_2DClass.py -i extract/particles.star -d $diam1 --user_email $user_email --nodes 5 &
 # python /home/yilaili/codes/Automatic-preprocessing-COSMIC2/submit_2DClass.py -i extract/particles.star -d $diam2 --user_email $user_email --nodes 5 &
-python /home/yilaili/codes/Automatic-preprocessing-COSMIC2/submit_2DClass.py -i extract/particles.star -d $diam3 --user_email $user_email --nodes 5 &
+python /home/yilaili/codes/Automatic-preprocessing-COSMIC2/submit_2DClass.py -i extract/particles.star -d $diam3 --user_email $user_email --nodes 5 
 # python /home/yilaili/codes/Automatic-preprocessing-COSMIC2/submit_2DClass.py -i extract/particles.star -d $diam4 --user_email $user_email --nodes 8 &
 # python /home/yilaili/codes/Automatic-preprocessing-COSMIC2/submit_2DClass.py -i extract/particles.star -d $diam5 --user_email $user_email --nodes 20 &
 # wait
