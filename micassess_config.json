@@ -10,7 +10,7 @@
     "extra": " ",
     "conda_env": "conda activate /projects/cosmic2/conda/cryoassess",
     "command": "micassess ",
-    "parameters": "-m $$model -t $$threshold ",
+    "parameters": "-m $$model -t $$threshold --threads 6",
     "tail": " "
   }
 }
