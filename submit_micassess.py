@@ -83,7 +83,7 @@ def submit(**args):
     stderr = '2> run_%s.err ' %args['program']
     module = ' '
     conda_env = 'conda activate /projects/cosmic2/conda/cryoassess'
-    command = 'micassess.py '
+    command = 'micassess '
     parameters = editparameters(job_config[program]['parameters'], args['model'], args['threshold'])
 
     write_submit_comet(codedir, wkdir, submit_name, \

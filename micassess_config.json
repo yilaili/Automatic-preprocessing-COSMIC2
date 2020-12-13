@@ -9,7 +9,7 @@
     "module": " ",
     "extra": " ",
     "conda_env": "conda activate /projects/cosmic2/conda/cryoassess",
-    "command": "micassess.py ",
+    "command": "micassess ",
     "parameters": "-i micrographs.star -m $$model -t $$threshold ",
     "tail": " "
   }
