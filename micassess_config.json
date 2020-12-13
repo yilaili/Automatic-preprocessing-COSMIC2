@@ -9,8 +9,8 @@
     "module": " ",
     "extra": " ",
     "conda_env": "conda activate /projects/cosmic2/conda/cryoassess",
-    "command": "python /home/yilaili/codes/Automatic-preprocessing-COSMIC2/micassess.py ",
-    "parameters": "-m $$model -t $$threshold ",
+    "command": "micassess.py ",
+    "parameters": "-i micrographs.star -m $$model -t $$threshold ",
     "tail": " "
   }
 }

@@ -18,7 +18,7 @@ def setupParserOptions():
     ap = argparse.ArgumentParser()
     ## General inputs
     ap.add_argument('-i', '--input',
-                    help="Provide the path of the micrograph.star file.")
+                    help="Provide the path of the micrographs.star file.")
     ap.add_argument('-o', '--output', default='micrographs_micassess.star',
                     help="Name of the output star file. Default is micrographs_micassess.star.")
     ap.add_argument('-p', '--program', default='micassess',
@@ -83,7 +83,7 @@ def submit(**args):
     stderr = '2> run_%s.err ' %args['program']
     module = ' '
     conda_env = 'conda activate /projects/cosmic2/conda/cryoassess'
-    command = 'python /home/yilaili/codes/Automatic-preprocessing-COSMIC2/micassess.py '
+    command = 'micassess.py '
     parameters = editparameters(job_config[program]['parameters'], args['model'], args['threshold'])
 
     write_submit_comet(codedir, wkdir, submit_name, \
