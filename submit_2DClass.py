@@ -83,7 +83,7 @@ def submit(**args):
     walltime = args['walltime']
     program = args['program']
     nodes = args['nodes']
-    np = str(4*int(nodes))
+    np = str(24*int(nodes))
     specs = 'diam%sk%s'%(args['diameter'], args['numclass'])
     submit_name = 'submit_%s_%s.sh' %(args['program'], specs)
     input = '--i %s '%args['input']
