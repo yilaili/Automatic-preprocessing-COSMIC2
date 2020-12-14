@@ -117,9 +117,9 @@ def submit(**args):
                         cluster='comet-gpu')
 
     ## Edit submit file so that multiple 2DAssess will be submitted in the same script
-    with open(submit_name) as f:
-        full_cmd = f.readlines().decode("utf-8").strip()[-1]
-    with open(submit_name, 'a+') as f:
+    with open(submit_name, encoding='utf-8') as f:
+        full_cmd = f.readlines()[-1]
+    with open(submit_name, 'a+', encoding='utf-8') as f:
         for name in dir_list[1:]:
             new_full_cmd = full_cmd.replace(dir_list[0], name)
             f.write(new_full_cmd)
