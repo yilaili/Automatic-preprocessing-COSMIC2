@@ -118,7 +118,7 @@ def submit(**args):
 
     ## Edit submit file so that multiple 2DAssess will be submitted in the same script
     with open(submit_name) as f:
-        full_cmd = f.readlines().decode("utf-8")[-1]
+        full_cmd = f.readlines().decode("utf-8").strip()[-1]
     with open(submit_name, 'a+') as f:
         for name in dir_list[1:]:
             new_full_cmd = full_cmd.replace(dir_list[0], name)
