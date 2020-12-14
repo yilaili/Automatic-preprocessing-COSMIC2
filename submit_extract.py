@@ -103,7 +103,7 @@ def submit(**args):
     walltime = args['walltime']
     program = args['program']
     nodes = args['nodes']
-    np = str(4*int(nodes))
+    np = str(24*int(nodes))
     input = '--i %s ' %args['input']
     output = ''
     args['part_star'] = os.path.join(args['part_dir'], args['part_star']) # particle star file should be inside the particle dir folder

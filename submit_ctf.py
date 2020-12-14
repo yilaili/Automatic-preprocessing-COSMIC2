@@ -87,7 +87,7 @@ def submit(**args):
     walltime = args['walltime']
     program = args['program']
     nodes = args['nodes']
-    np = str(4*int(nodes))
+    np = str(24*int(nodes))
     input = '--i %s ' %args['input']
     output = '--o %s ' %args['output']
     stdout = os.path.join('> %s'%args['output'], 'run_%s.out '%args['program'])
